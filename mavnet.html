@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MavNet Daily Message</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#0b1020;
+    color:white;
+    text-align:center;
+    padding:30px;
+}
+.box{
+    background:#1b2340;
+    border-radius:18px;
+    padding:20px;
+    margin:18px auto;
+    max-width:750px;
+}
+.gold{background:#bfa100;}
+.purple{background:#6b3fd4;}
+.none{background:#555;}
+.small{font-size:14px;color:#bbb;}
+.banner{
+    background:#00aaff;
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📡 MAVNET DAILY MESSAGE</h1>
+
+<div class="banner">
+If MavNet looks different today, a new system rollout is being tested.
+</div>
+
+<div class="box" id="dateBox">
+<h2 id="dateText"></h2>
+<h3 id="colorText"></h3>
+</div>
+
+<div class="box">
+<h3>🗓️ Schedule Status</h3>
+<p>No delays<br>No early dismissals<br>Message delivered on time</p>
+</div>
+
+<div class="box">
+<h3>🧑‍🔧 Operational Transparency Notice</h3>
+<p>Homer requested send-button access.<br>Request denied.</p>
+</div>
+
+<div class="box">
+<h3>🎓 College Fact</h3>
+<p>Assignments are timestamped exactly when submitted.<br>
+There is no “I thought it was a day off” checkbox.</p>
+</div>
+
+<div class="box">
+<h3>🧭 System Status</h3>
+<p id="statusText"></p>
+</div>
+
+<p class="small">© 2026 MavNet Industries LLC</p>
+
+<script>
+
+// ===== AUTO DATE =====
+let date = new Date();
+let options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+document.getElementById("dateText").innerHTML =
+"Good morning. Today is " + date.toLocaleDateString("en-US", options);
+
+
+// ===== PURPLE / GOLD CALENDAR =====
+const calendar = {
+
+// FEBRUARY
+"2026-02-17":"Gold",
+"2026-02-18":"Gold",
+"2026-02-19":"Purple",
+"2026-02-20":"Gold",
+
+// MARCH
+"2026-03-02":"Gold",
+"2026-03-03":"Purple",
+"2026-03-04":"Gold",
+"2026-03-05":"Purple",
+"2026-03-06":"Gold",
+
+"2026-03-09":"Purple",
+"2026-03-10":"Gold",
+"2026-03-11":"Purple",
+"2026-03-12":"Gold",
+"2026-03-13":"Purple",
+
+// APRIL (example start)
+"2026-04-01":"Purple",
+"2026-04-02":"Gold",
+"2026-04-03":"Purple",
+"2026-04-06":"Gold"
+};
+
+let today = new Date().toISOString().split("T")[0];
+let colorDay = calendar[today] || "None";
+
+
+// ===== DISPLAY COLOR =====
+if(colorDay=="Gold"){
+document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";
+document.getElementById("dateBox").className="box gold";
+}
+else if(colorDay=="Purple"){
+document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";
+document.getElementById("dateBox").className="box purple";
+}
+else{
+document.getElementById("colorText").innerHTML="No Color Day";
+document.getElementById("dateBox").className="box none";
+}
+
+
+// ===== STATUS PANEL =====
+document.getElementById("statusText").innerHTML =
+"Color Day: "+colorDay+
+"<br>Delivery: Verified"+
+"<br>STOP Command: Active"+
+"<br>Homer Access: Read-only";
+
+</script>
+
+</body>
+</html>
