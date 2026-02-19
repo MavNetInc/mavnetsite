@@ -26,6 +26,34 @@ body{
 </head>
 
 <body>
+    <!-- Add this just below <body> -->
+<div id="system-banner">
+  ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
+</div>
+
+<style>
+  /* Banner styles */
+  #system-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffcc00; /* yellow alert */
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px 0;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  /* Push the page content down so banner doesn't overlap */
+  body {
+    padding-top: 90px; /* adjust if your banner height changes */
+  }
+</style>
+
 
 <h1>📡 MAVNET DAILY MESSAGE</h1>
 
@@ -164,4 +192,5 @@ document.getElementById("statusText").innerHTML =
 
 </body>
 </html>
+
 
