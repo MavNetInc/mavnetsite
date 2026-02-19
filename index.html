@@ -105,6 +105,8 @@ body{
     <div id="dropdown" style="display:none; position:absolute; background:#1b2340; border-radius:10px; padding:5px; top:35px; left:0; z-index:999;">
       <button onclick="showPage('stats')">Stats</button>
       <button onclick="showPage('prefs')">Page Preferences</button>
+      <button onclick="showPage('updates')">Updates</button>
+      <button onclick="showPage('suggestions')">Suggestions</button>
     </div>
   </div>
   <button onclick="showPage('home')">Home</button>
@@ -179,6 +181,25 @@ body{
   </div>
 </div>
 
+<!-- Updates Page -->
+<div id="updates" class="page">
+  <div class="box" style="max-height:400px; overflow-y:auto;">
+    <h2>📜 All Updates</h2>
+    <ul id="allUpdates"></ul>
+  </div>
+</div>
+
+<!-- Suggestions Page -->
+<div id="suggestions" class="page">
+  <div class="box">
+    <h2>💡 Submit a Suggestion</h2>
+    <input type="text" id="suggestName" placeholder="Your name" style="width:60%;padding:5px;"><br><br>
+    <textarea id="suggestText" placeholder="Your suggestion" style="width:60%;height:100px;padding:5px;"></textarea><br><br>
+    <button onclick="sendSuggestion()">Submit</button>
+    <p id="suggestFeedback" style="margin-top:10px;color:#ffcc00;"></p>
+  </div>
+</div>
+
 <!-- To-Do / Reminders Page -->
 <div id="todos" class="page">
   <div class="box">
@@ -194,226 +215,98 @@ body{
 <p class="small">© 2026 MavNet Industries LLC</p>
 
 <script>
-// ===== GET LOCAL DATE =====
+// ===== DATE =====
 let now = new Date();
 let year = now.getFullYear();
 let month = String(now.getMonth()+1).padStart(2,'0');
 let day = String(now.getDate()).padStart(2,'0');
 let today = `${year}-${month}-${day}`;
 
-// Pretty date
-let pretty = now.toLocaleDateString("en-US",
-{weekday:'long', year:'numeric', month:'long', day:'numeric'});
-document.getElementById("dateText").innerHTML =
-"Good morning. Today is " + pretty;
+let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
+document.getElementById("dateText").innerHTML = "Good morning. Today is " + pretty;
 
-// ===== PURPLE / GOLD CALENDAR =====
-const calendar = {
-"2026-02-17":"Gold",
-"2026-02-18":"Gold",
-"2026-02-19":"Purple",
-"2026-02-20":"Gold",
-"2026-02-23":"Purple",
-"2026-02-24":"Gold",
-};
-
-// ===== FIND COLOR =====
+// ===== COLOR DAY =====
+const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold"};
 let colorDay = calendar[today] || "None";
-if(colorDay==="Gold"){
-document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";
-document.getElementById("dateBox").className="box gold";
-}
-else if(colorDay==="Purple"){
-document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";
-document.getElementById("dateBox").className="box purple";
-}
-else{
-document.getElementById("colorText").innerHTML="No Color Day";
-document.getElementById("dateBox").className="box none";
-}
+if(colorDay==="Gold"){document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
+else if(colorDay==="Purple"){document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
+else{document.getElementById("colorText").innerHTML="No Color Day";document.getElementById("dateBox").className="box none";}
 
-// ===== DAILY FACT (fixed per day) =====
-const facts = [
-"Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.",
-"Ultra-short-throw projectors can make a 100-inch image from less than a foot away.",
-"Interactive projectors track pen position using infrared cameras.",
-"GitHub Pages can host a full website for free using only one HTML file.",
-"LED destination signs refresh hundreds of times per second so letters look solid.",
-"The London Underground has stations older than most electric railways.",
-"Some colleges automatically lock assignments at the deadline with no override.",
-"Projectors lose brightness as lamps age, even if they still turn on.",
-"Color-day rotations exist so no class always meets at the hardest time of day.",
-"Many subway maps are diagrammatic and not geographically accurate.",
-"Touch projectors must be recalibrated if the wall mount shifts even slightly.",
-"University attendance systems often sync with ID card scans.",
-"Short-throw projectors reduce shadows when teachers stand near the board.",
-"Learning management systems can detect late uploads automatically.",
-"Most classroom projectors run quieter in Eco mode.",
-"Some subway stations were built before elevators were invented.",
-"Digital whiteboard pens usually don’t use ink at all.",
-"Projector focus should be adjusted after warm-up, not immediately after power-on.",
-"Many universities expect students to check email daily.",
-"LED matrices use multiplexing to control thousands of lights with fewer wires.",
-"Some projectors store calibration data internally so moving them breaks alignment.",
-"College lecture recordings are often auto-uploaded overnight.",
-"Subway trains use destination signs so riders can identify short-turn trains.",
-"Projector filters need cleaning or airflow drops.",
-"Assignment timestamps are stored in server logs even if deleted later.",
-"Many subway systems have ghost platforms no longer in use.",
-"Interactive boards can detect multiple pens at once.",
-"GitHub keeps a history of every file change automatically.",
-"Universities rarely accept 'I didn’t see it online' as an excuse.",
-"Short-throw lenses are shaped differently than standard projector lenses.",
-"Some subway stations have curved platforms that require special mirrors.",
-"Projector keystone correction reduces image sharpness.",
-"Learning systems can show professors how long a quiz was open.",
-"Many colleges back up assignments automatically.",
-"LED boards on trains are readable in sunlight because of high refresh rates.",
-"Most classroom projectors are mounted slightly off-center on purpose.",
-"Subway maps often use 45° angles to stay readable.",
-"Online assignments usually save drafts automatically.",
-"Projector bulbs dim faster if turned on and off repeatedly.",
-"Some subway systems run maintenance trains overnight.",
-"Interactive pens communicate using infrared or ultrasonic signals.",
-"Universities keep records of grade changes for auditing.",
-"Projector screens reflect light differently depending on material.",
-"Some subway stations were renamed but locals still use the old names.",
-"MavNet reminders are more reliable than memory alone.",
-"Skye once recalibrated a projector faster than anyone expected.",
-"Everleigh still thinks engine noise improves focus.",
-"Consistency builds trust. Alarms build consistency."
-];
-
-function getDailyFact() {
-  let seed = today.replace(/-/g, "");
-  let index = parseInt(seed) % facts.length;
-  return facts[index];
-}
+// ===== DAILY FACT =====
+const facts = ["Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.","Ultra-short-throw projectors can make a 100-inch image from less than a foot away.","Interactive projectors track pen position using infrared cameras.","GitHub Pages can host a full website for free using only one HTML file.","LED destination signs refresh hundreds of times per second so letters look solid.","The London Underground has stations older than most electric railways.","Some colleges automatically lock assignments at the deadline with no override.","Projectors lose brightness as lamps age, even if they still turn on.","Color-day rotations exist so no class always meets at the hardest time of day.","Many subway maps are diagrammatic and not geographically accurate.","Touch projectors must be recalibrated if the wall mount shifts even slightly.","University attendance systems often sync with ID card scans.","Short-throw projectors reduce shadows when teachers stand near the board.","Learning management systems can detect late uploads automatically.","Most classroom projectors run quieter in Eco mode.","Some subway stations were built before elevators were invented.","Digital whiteboard pens usually don’t use ink at all.","Projector focus should be adjusted after warm-up, not immediately after power-on.","Many universities expect students to check email daily.","LED matrices use multiplexing to control thousands of lights with fewer wires.","Some projectors store calibration data internally so moving them breaks alignment.","College lecture recordings are often auto-uploaded overnight.","Subway trains use destination signs so riders can identify short-turn trains.","Projector filters need cleaning or airflow drops.","Assignment timestamps are stored in server logs even if deleted later.","Many subway systems have ghost platforms no longer in use.","Interactive boards can detect multiple pens at once.","GitHub keeps a history of every file change automatically.","Universities rarely accept 'I didn’t see it online' as an excuse.","Short-throw lenses are shaped differently than standard projector lenses.","Some subway stations have curved platforms that require special mirrors.","Projector keystone correction reduces image sharpness.","Learning systems can show professors how long a quiz was open.","Many colleges back up assignments automatically.","LED boards on trains are readable in sunlight because of high refresh rates.","Most classroom projectors are mounted slightly off-center on purpose.","Subway maps often use 45° angles to stay readable.","Online assignments usually save drafts automatically.","Projector bulbs dim faster if turned on and off repeatedly.","Some subway systems run maintenance trains overnight.","Interactive pens communicate using infrared or ultrasonic signals.","Universities keep records of grade changes for auditing.","Projector screens reflect light differently depending on material.","Some subway stations were renamed but locals still use the old names.","MavNet reminders are more reliable than memory alone.","Skye once recalibrated a projector faster than anyone expected.","Everleigh still thinks engine noise improves focus.","Consistency builds trust. Alarms build consistency."];
+function getDailyFact(){let seed=today.replace(/-/g,"");let index=parseInt(seed)%facts.length;return facts[index];}
 document.getElementById("factText").innerHTML = getDailyFact();
 
 // ===== STATUS =====
-document.getElementById("statusText").innerHTML =
-"Detected date: " + today +
-"<br>Color Day: " + colorDay +
-"<br>Delivery: Verified" +
-"<br>System Mode: Testing";
+document.getElementById("statusText").innerHTML = "Detected date: " + today + "<br>Color Day: " + colorDay + "<br>Delivery: Verified<br>System Mode: Testing";
 
-// ===== Page Navigation =====
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-  document.getElementById(pageId).classList.add('active-page');
-  document.getElementById('dropdown').style.display = 'none'; // close dropdown
-}
+// ===== NAVIGATION =====
+function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active-page'));document.getElementById(pageId).classList.add('active-page');document.getElementById('dropdown').style.display='none';}
+function toggleDropdown(){const d=document.getElementById('dropdown');d.style.display=d.style.display==='none'?'block':'none';}
 
-// ===== Dropdown Toggle =====
-function toggleDropdown() {
-  const d = document.getElementById('dropdown');
-  d.style.display = d.style.display === 'none' ? 'block' : 'none';
-}
+// ===== PAGE PREFERENCES =====
+function applyPrefs(){document.body.style.background=document.getElementById('bgColor').value;document.body.style.color=document.getElementById('textColor').value;}
 
-// ===== Page Preferences =====
-function applyPrefs() {
-  const bg = document.getElementById('bgColor').value;
-  const txt = document.getElementById('textColor').value;
-  document.body.style.background = bg;
-  document.body.style.color = txt;
-}
-
-// ===== Rotating "What's New" banner =====
-const updates = [
-  "Page Preferences tab added for custom colors!",
-  "New daily facts added to the archive.",
-  "Scheduled maintenance today at 3 PM.",
-  "Minor bug fixes applied last night."
-];
+// ===== ROTATING BANNER =====
+const updates = ["Page Preferences tab added for custom colors!","New daily facts added to the archive.","Scheduled maintenance today at 3 PM.","Minor bug fixes applied last night."];
 let currentUpdate = 0;
-function rotateBanner() {
-  document.getElementById("banner-new").innerText = "✨ What's New: " + updates[currentUpdate] + " ✨";
-  currentUpdate = (currentUpdate + 1) % updates.length;
-}
-setInterval(rotateBanner, 5000);
-rotateBanner();
+function rotateBanner(){document.getElementById("banner-new").innerText="✨ What's New: "+updates[currentUpdate]+" ✨";currentUpdate=(currentUpdate+1)%updates.length;}
+setInterval(rotateBanner,5000);rotateBanner();
 
-// ===== To-Do / Reminders with Due Dates =====
-function loadTodos() {
-    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
-    const ul = document.getElementById('todoList');
-    ul.innerHTML = "";
-    todos.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.textContent = item.due ? `${item.text} (Due: ${item.due})` : item.text;
-        li.onclick = () => {
-            todos.splice(index,1);
-            localStorage.setItem('mavnetTodos', JSON.stringify(todos));
-            loadTodos();
-            updateStats();
-        };
+// ===== ALL UPDATES LIST =====
+function populateUpdates(){const ul=document.getElementById('allUpdates');ul.innerHTML="";updates.forEach(u=>{const li=document.createElement('li');li.textContent=u;ul.appendChild(li);});}
+populateUpdates();
+
+// ===== TO-DOS / REMINDERS =====
+function loadTodos(){
+    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
+    const ul=document.getElementById('todoList');ul.innerHTML="";
+    todos.forEach((item,index)=>{
+        const li=document.createElement('li');
+        li.textContent=item.due?`${item.text} (Due: ${item.due})`:item.text;
+        li.onclick=()=>{todos.splice(index,1);localStorage.setItem('mavnetTodos',JSON.stringify(todos));loadTodos();updateStats();};
         ul.appendChild(li);
     });
-    updateHomeTodos();
-    updateStats();
+    updateHomeTodos();updateStats();
+}
+function addTodo(){const textInput=document.getElementById('todoInput').value.trim();const dueInput=document.getElementById('todoDue').value;if(!textInput)return;const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];todos.push({text:textInput,due:dueInput});localStorage.setItem('mavnetTodos',JSON.stringify(todos));document.getElementById('todoInput').value="";document.getElementById('todoDue').value="";loadTodos();}
+function clearTodos(){localStorage.removeItem('mavnetTodos');loadTodos();}
+function updateHomeTodos(){
+    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
+    const ul=document.getElementById('homeTodoList');ul.innerHTML="";
+    const todayDate=new Date().toISOString().split('T')[0];
+    const upcoming=todos.filter(t=>t.due&&t.due>=todayDate).sort((a,b)=>a.due.localeCompare(b.due));
+    upcoming.forEach(item=>{const li=document.createElement('li');li.textContent=`${item.text} (Due: ${item.due})`;ul.appendChild(li);});
+    if(upcoming.length===0){ul.innerHTML="<li>No upcoming reminders.</li>";}
 }
 
-function addTodo() {
-    const textInput = document.getElementById('todoInput').value.trim();
-    const dueInput = document.getElementById('todoDue').value;
-    if(!textInput) return;
-
-    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
-    todos.push({ text: textInput, due: dueInput });
-    localStorage.setItem('mavnetTodos', JSON.stringify(todos));
-    document.getElementById('todoInput').value = "";
-    document.getElementById('todoDue').value = "";
-    loadTodos();
+// ===== STATS PAGE =====
+function updateStats(){
+    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
+    const todayDate=new Date().toISOString().split('T')[0];
+    const total=todos.length;
+    const upcoming=todos.filter(t=>t.due&&t.due>=todayDate).length;
+    const overdue=todos.filter(t=>t.due&&t.due<todayDate).length;
+    document.getElementById('statTotalTodos').innerText=total;
+    document.getElementById('statUpcomingTodos').innerText=upcoming;
+    document.getElementById('statOverdueTodos').innerText=overdue;
+    const colorCounts={Gold:0,Purple:0};
+    Object.values(calendar).forEach(c=>{if(c==='Gold')colorCounts.Gold++;if(c==='Purple')colorCounts.Purple++;});
+    document.getElementById('statGoldDays').innerText=colorCounts.Gold;
+    document.getElementById('statPurpleDays').innerText=colorCounts.Purple;
 }
+loadTodos();updateStats();
 
-function clearTodos() {
-    localStorage.removeItem('mavnetTodos');
-    loadTodos();
+// ===== SUGGESTIONS =====
+function sendSuggestion(){
+    const name=document.getElementById('suggestName').value.trim();
+    const text=document.getElementById('suggestText').value.trim();
+    if(!text)return alert("Please enter a suggestion.");
+    window.location.href=`mailto:your-email@example.com?subject=New MavNet Suggestion from ${name}&body=${encodeURIComponent(text)}`;
+    document.getElementById('suggestFeedback').innerText="Suggestion submitted! Check your email client to send.";
+    document.getElementById('suggestName').value="";
+    document.getElementById('suggestText').value="";
 }
-
-function updateHomeTodos() {
-    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
-    const ul = document.getElementById('homeTodoList');
-    ul.innerHTML = "";
-    const todayDate = new Date().toISOString().split('T')[0];
-    const upcoming = todos
-        .filter(t => t.due && t.due >= todayDate)
-        .sort((a,b) => a.due.localeCompare(b.due));
-    upcoming.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `${item.text} (Due: ${item.due})`;
-        ul.appendChild(li);
-    });
-    if(upcoming.length === 0){
-        ul.innerHTML = "<li>No upcoming reminders.</li>";
-    }
-}
-
-// ===== Stats Page Update =====
-function updateStats() {
-    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
-    const todayDate = new Date().toISOString().split('T')[0];
-
-    const total = todos.length;
-    const upcoming = todos.filter(t => t.due && t.due >= todayDate).length;
-    const overdue = todos.filter(t => t.due && t.due < todayDate).length;
-
-    document.getElementById('statTotalTodos').innerText = total;
-    document.getElementById('statUpcomingTodos').innerText = upcoming;
-    document.getElementById('statOverdueTodos').innerText = overdue;
-
-    const colorCounts = {Gold:0, Purple:0};
-    Object.values(calendar).forEach(c => {
-        if(c === 'Gold') colorCounts.Gold++;
-        if(c === 'Purple') colorCounts.Purple++;
-    });
-    document.getElementById('statGoldDays').innerText = colorCounts.Gold;
-    document.getElementById('statPurpleDays').innerText = colorCounts.Purple;
-}
-
-loadTodos();
-updateStats();
 </script>
 
 </body>
