@@ -79,7 +79,7 @@ body{
 <!-- Navigation -->
 <div id="nav">
   <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('stats')">System Stats</button>
+  <button onclick="showPage('notifications')">Notifications</button>
   <button onclick="showPage('prefs')">Page Preferences</button>
 </div>
 
@@ -105,13 +105,17 @@ body{
 
 </div> <!-- end home -->
 
-<!-- System Stats Page -->
-<div id="stats" class="page">
+<!-- Notifications Page -->
+<div id="notifications" class="page">
   <div class="box">
-    <h2>💻 System Stats</h2>
-    <p id="cpuUsage">CPU Usage: 34%</p>
-    <!--<p id="memoryUsage">Memory Usage: 2.8GB / 8GB</p>-->
-    <p id="diskSpace">Disk Space: 120GB / 256GB</p>
+    <h2>📢 Recent Notifications</h2>
+    <ul id="notificationList">
+      <li>⚠️ Scheduled system maintenance today at 3 PM.</li>
+      <li>📌 New daily facts added to the archive.</li>
+      <li>💡 Tip: Refresh page to get the latest color day info.</li>
+      <li>🛠️ Minor bug fixes applied last night.</li>
+      <li>🔔 New feature: Page Preferences tab for custom colors!</li>
+    </ul>
   </div>
 </div>
 
@@ -252,4 +256,3 @@ function applyPrefs() {
 
 </body>
 </html>
-
