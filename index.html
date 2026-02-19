@@ -96,6 +96,7 @@ body{
   <button onclick="showPage('home')">Home</button>
   <button onclick="showPage('notifications')">Notifications</button>
   <button onclick="showPage('prefs')">Page Preferences</button>
+  <button onclick="showPage('todos')">Reminders / To-Dos</button>
 </div>
 
 <!-- Home Page -->
@@ -148,16 +149,25 @@ body{
   </div>
 </div>
 
+<!-- To-Do / Reminders Page -->
+<div id="todos" class="page">
+  <div class="box">
+    <h2>📝 Reminders / To-Dos</h2>
+    <input type="text" id="todoInput" placeholder="Enter a reminder" style="width:70%;padding:5px;">
+    <button onclick="addTodo()">Add</button>
+    <ul id="todoList"></ul>
+    <button onclick="clearTodos()" style="margin-top:10px;">Clear All</button>
+  </div>
+</div>
+
 <p class="small">© 2026 MavNet Industries LLC</p>
 
 <script>
 // ===== GET LOCAL DATE =====
 let now = new Date();
-
 let year = now.getFullYear();
 let month = String(now.getMonth()+1).padStart(2,'0');
 let day = String(now.getDate()).padStart(2,'0');
-
 let today = `${year}-${month}-${day}`;
 
 // Pretty date
@@ -178,7 +188,6 @@ const calendar = {
 
 // ===== FIND COLOR =====
 let colorDay = calendar[today] || "None";
-
 if(colorDay==="Gold"){
 document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";
 document.getElementById("dateBox").className="box gold";
@@ -249,7 +258,6 @@ function getDailyFact() {
   let index = parseInt(seed) % facts.length;
   return facts[index];
 }
-
 document.getElementById("factText").innerHTML = getDailyFact();
 
 // ===== STATUS =====
@@ -287,6 +295,39 @@ function rotateBanner() {
 }
 setInterval(rotateBanner, 5000); // rotates every 5 seconds
 rotateBanner(); // initial display
+
+// ===== To-Do / Reminders =====
+function loadTodos() {
+  const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
+  const ul = document.getElementById('todoList');
+  ul.innerHTML = "";
+  todos.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    li.onclick = () => {
+      todos.splice(index,1);
+      localStorage.setItem('mavnetTodos', JSON.stringify(todos));
+      loadTodos();
+    };
+    ul.appendChild(li);
+  });
+}
+function addTodo() {
+  const input = document.getElementById('todoInput');
+  const value = input.value.trim();
+  if(value === "") return;
+  const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
+  todos.push(value);
+  localStorage.setItem('mavnetTodos', JSON.stringify(todos));
+  input.value = "";
+  loadTodos();
+}
+function clearTodos() {
+  localStorage.removeItem('mavnetTodos');
+  loadTodos();
+}
+loadTodos();
+
 </script>
 
 </body>
