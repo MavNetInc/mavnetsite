@@ -69,6 +69,13 @@ body{
     background: #6b3fd4;
 }
 
+/* Dropdown */
+#dropdown button {
+    width: 150px;
+    display:block;
+    margin:5px auto;
+}
+
 /* Pages */
 .page {
     display: none; /* hide all pages by default */
@@ -93,9 +100,15 @@ body{
 
 <!-- Navigation -->
 <div id="nav">
+  <div style="display:inline-block; position:relative;">
+    <button onclick="toggleDropdown()">More Settings ▼</button>
+    <div id="dropdown" style="display:none; position:absolute; background:#1b2340; border-radius:10px; padding:5px; top:35px; left:0; z-index:999;">
+      <button onclick="showPage('stats')">Stats</button>
+      <button onclick="showPage('prefs')">Page Preferences</button>
+    </div>
+  </div>
   <button onclick="showPage('home')">Home</button>
   <button onclick="showPage('notifications')">Notifications</button>
-  <button onclick="showPage('prefs')">Page Preferences</button>
   <button onclick="showPage('todos')">Reminders / To-Dos</button>
 </div>
 
@@ -151,6 +164,18 @@ body{
     <input type="color" id="textColor" name="textColor" value="#ffffff">
     <br><br>
     <button onclick="applyPrefs()">Apply</button>
+  </div>
+</div>
+
+<!-- Stats Page -->
+<div id="stats" class="page">
+  <div class="box">
+    <h2>📊 MavNet Stats</h2>
+    <p>Total Reminders: <span id="statTotalTodos"></span></p>
+    <p>Upcoming Reminders: <span id="statUpcomingTodos"></span></p>
+    <p>Overdue Reminders: <span id="statOverdueTodos"></span></p>
+    <p>Gold Days So Far: <span id="statGoldDays"></span></p>
+    <p>Purple Days So Far: <span id="statPurpleDays"></span></p>
   </div>
 </div>
 
@@ -277,6 +302,13 @@ document.getElementById("statusText").innerHTML =
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
   document.getElementById(pageId).classList.add('active-page');
+  document.getElementById('dropdown').style.display = 'none'; // close dropdown
+}
+
+// ===== Dropdown Toggle =====
+function toggleDropdown() {
+  const d = document.getElementById('dropdown');
+  d.style.display = d.style.display === 'none' ? 'block' : 'none';
 }
 
 // ===== Page Preferences =====
@@ -314,10 +346,12 @@ function loadTodos() {
             todos.splice(index,1);
             localStorage.setItem('mavnetTodos', JSON.stringify(todos));
             loadTodos();
+            updateStats();
         };
         ul.appendChild(li);
     });
     updateHomeTodos();
+    updateStats();
 }
 
 function addTodo() {
@@ -356,8 +390,30 @@ function updateHomeTodos() {
     }
 }
 
-loadTodos();
+// ===== Stats Page Update =====
+function updateStats() {
+    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
+    const todayDate = new Date().toISOString().split('T')[0];
 
+    const total = todos.length;
+    const upcoming = todos.filter(t => t.due && t.due >= todayDate).length;
+    const overdue = todos.filter(t => t.due && t.due < todayDate).length;
+
+    document.getElementById('statTotalTodos').innerText = total;
+    document.getElementById('statUpcomingTodos').innerText = upcoming;
+    document.getElementById('statOverdueTodos').innerText = overdue;
+
+    const colorCounts = {Gold:0, Purple:0};
+    Object.values(calendar).forEach(c => {
+        if(c === 'Gold') colorCounts.Gold++;
+        if(c === 'Purple') colorCounts.Purple++;
+    });
+    document.getElementById('statGoldDays').innerText = colorCounts.Gold;
+    document.getElementById('statPurpleDays').innerText = colorCounts.Purple;
+}
+
+loadTodos();
+updateStats();
 </script>
 
 </body>
