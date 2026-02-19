@@ -107,6 +107,7 @@ body{
       <button onclick="showPage('prefs')">Page Preferences</button>
       <button onclick="showPage('updates')">Updates</button>
       <button onclick="showPage('suggestions')">Suggestions</button>
+      <button onclick="showPage('help')">Help</button>
     </div>
   </div>
   <button onclick="showPage('home')">Home</button>
@@ -212,6 +213,25 @@ body{
   </div>
 </div>
 
+<!-- Help Page -->
+<div id="help" class="page">
+  <div class="box" style="max-width:800px; text-align:left;">
+    <h2>❓ MavNet Help & How-To</h2>
+    <ol>
+      <li><strong>Home Page:</strong> Shows the daily message, daily fact (fixed per day), and upcoming reminders.</li>
+      <li><strong>Notifications:</strong> Lists the latest system notifications and tips.</li>
+      <li><strong>Reminders / To-Dos:</strong> Add reminders using the text box and optional due date. Click an item to remove it. Reminders are stored in your browser.</li>
+      <li><strong>Page Preferences:</strong> Customize background and text colors using the color pickers. Click "Apply" to save changes.</li>
+      <li><strong>Stats:</strong> View total reminders, upcoming and overdue reminders, plus Gold and Purple day counts.</li>
+      <li><strong>Updates:</strong> Scrollable list of all past updates (“What’s New”).</li>
+      <li><strong>Suggestions:</strong> Enter your idea and name, click submit, and it will open your email client to send feedback.</li>
+      <li><strong>More Settings Dropdown:</strong> Use this to quickly access Stats, Page Preferences, Updates, Suggestions, and Help.</li>
+      <li><strong>System Banner:</strong> Always shows the latest system notices and “What’s New.”</li>
+    </ol>
+    <p>For any questions, reach out to <a href="mailto:your-email@example.com" style="color:#ffcc00;">MavNet Support</a>.</p>
+  </div>
+</div>
+
 <p class="small">© 2026 MavNet Industries LLC</p>
 
 <script>
@@ -302,12 +322,4 @@ function sendSuggestion(){
     const name=document.getElementById('suggestName').value.trim();
     const text=document.getElementById('suggestText').value.trim();
     if(!text)return alert("Please enter a suggestion.");
-    window.location.href=`mailto:your-email@example.com?subject=New MavNet Suggestion from ${name}&body=${encodeURIComponent(text)}`;
-    document.getElementById('suggestFeedback').innerText="Suggestion submitted! Check your email client to send.";
-    document.getElementById('suggestName').value="";
-    document.getElementById('suggestText').value="";
-}
-</script>
-
-</body>
-</html>
+   
