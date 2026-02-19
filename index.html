@@ -26,6 +26,39 @@ body{
 </head>
 
 <body>
+    <!-- Add this below <body> for navigation -->
+<div id="nav">
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('stats')">System Stats</button>
+  <button onclick="showPage('prefs')">Page Preferences</button>
+</div>
+
+<style>
+  #nav {
+    margin: 20px 0;
+    text-align: center;
+  }
+  #nav button {
+    background: #1b2340;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  #nav button:hover {
+    background: #6b3fd4; /* purple hover */
+  }
+  .page {
+    display: none; /* hide all pages by default */
+  }
+  .active-page {
+    display: block; /* show the active page */
+  }
+</style>
+
     <!-- Add this just below <body> -->
 <div id="system-banner">
   ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
@@ -192,5 +225,6 @@ document.getElementById("statusText").innerHTML =
 
 </body>
 </html>
+
 
 
