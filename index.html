@@ -11,6 +11,7 @@ body{
     text-align:center;
     padding:25px;
 }
+/* Boxes */
 .box{
     background:#1b2340;
     border-radius:18px;
@@ -22,51 +23,9 @@ body{
 .purple{background:#6b3fd4;}
 .none{background:#555;}
 .small{font-size:14px;color:#bbb;}
-</style>
-</head>
 
-<body>
-    <!-- Add this below <body> for navigation -->
-<div id="nav">
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('stats')">System Stats</button>
-  <button onclick="showPage('prefs')">Page Preferences</button>
-</div>
-
-<style>
-  #nav {
-    margin: 20px 0;
-    text-align: center;
-  }
-  #nav button {
-    background: #1b2340;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 0 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  #nav button:hover {
-    background: #6b3fd4; /* purple hover */
-  }
-  .page {
-    display: none; /* hide all pages by default */
-  }
-  .active-page {
-    display: block; /* show the active page */
-  }
-</style>
-
-    <!-- Add this just below <body> -->
-<div id="system-banner">
-  ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
-</div>
-
-<style>
-  /* Banner styles */
-  #system-banner {
+/* System Banner */
+#system-banner {
     position: fixed;
     top: 0;
     left: 0;
@@ -79,14 +38,53 @@ body{
     z-index: 9999;
     font-family: Arial, sans-serif;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
+}
 
-  /* Push the page content down so banner doesn't overlap */
-  body {
-    padding-top: 90px; /* adjust if your banner height changes */
-  }
+/* Navigation */
+#nav {
+    margin: 20px 0;
+    text-align: center;
+}
+#nav button {
+    background: #1b2340;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#nav button:hover {
+    background: #6b3fd4;
+}
+
+/* Pages */
+.page {
+    display: none; /* hide all pages by default */
+}
+.active-page {
+    display: block; /* show active page */
+}
 </style>
+</head>
 
+<body>
+
+<!-- System Banner -->
+<div id="system-banner">
+  ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
+</div>
+
+<!-- Navigation -->
+<div id="nav">
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('stats')">System Stats</button>
+  <button onclick="showPage('prefs')">Page Preferences</button>
+</div>
+
+<!-- Home Page -->
+<div id="home" class="page active-page">
 
 <h1>📡 MAVNET DAILY MESSAGE</h1>
 
@@ -105,10 +103,35 @@ body{
 <p id="statusText"></p>
 </div>
 
+</div> <!-- end home -->
+
+<!-- System Stats Page -->
+<div id="stats" class="page">
+  <div class="box">
+    <h2>💻 System Stats</h2>
+    <p id="cpuUsage">CPU Usage: 34%</p>
+    <p id="memoryUsage">Memory Usage: 2.8GB / 8GB</p>
+    <p id="diskSpace">Disk Space: 120GB / 256GB</p>
+  </div>
+</div>
+
+<!-- Page Preferences -->
+<div id="prefs" class="page">
+  <div class="box">
+    <h2>⚙️ Page Preferences</h2>
+    <label for="bgColor">Background color:</label>
+    <input type="color" id="bgColor" name="bgColor" value="#0b1020">
+    <br><br>
+    <label for="textColor">Text color:</label>
+    <input type="color" id="textColor" name="textColor" value="#ffffff">
+    <br><br>
+    <button onclick="applyPrefs()">Apply</button>
+  </div>
+</div>
+
 <p class="small">© 2026 MavNet Industries LLC</p>
 
 <script>
-
 // ===== GET LOCAL DATE =====
 let now = new Date();
 
@@ -124,20 +147,15 @@ let pretty = now.toLocaleDateString("en-US",
 document.getElementById("dateText").innerHTML =
 "Good morning. Today is " + pretty;
 
-
 // ===== PURPLE / GOLD CALENDAR =====
 const calendar = {
-
 "2026-02-17":"Gold",
 "2026-02-18":"Gold",
 "2026-02-19":"Purple",
 "2026-02-20":"Gold",
 "2026-02-23":"Purple",
 "2026-02-24":"Gold",
-
-// add more dates here
 };
-
 
 // ===== FIND COLOR =====
 let colorDay = calendar[today] || "None";
@@ -155,10 +173,8 @@ document.getElementById("colorText").innerHTML="No Color Day";
 document.getElementById("dateBox").className="box none";
 }
 
-
 // ===== RANDOM FACTS =====
 const facts = [
-
 "Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.",
 "Ultra-short-throw projectors can make a 100-inch image from less than a foot away.",
 "Interactive projectors track pen position using infrared cameras.",
@@ -207,12 +223,10 @@ const facts = [
 "Skye once recalibrated a projector faster than anyone expected.",
 "Everleigh still thinks engine noise improves focus.",
 "Consistency builds trust. Alarms build consistency."
-
 ];
 
 let fact = facts[Math.floor(Math.random()*facts.length)];
 document.getElementById("factText").innerHTML = fact;
-
 
 // ===== STATUS =====
 document.getElementById("statusText").innerHTML =
@@ -221,10 +235,20 @@ document.getElementById("statusText").innerHTML =
 "<br>Delivery: Verified" +
 "<br>System Mode: Testing";
 
+// ===== Page Navigation =====
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+  document.getElementById(pageId).classList.add('active-page');
+}
+
+// ===== Page Preferences =====
+function applyPrefs() {
+  const bg = document.getElementById('bgColor').value;
+  const txt = document.getElementById('textColor').value;
+  document.body.style.background = bg;
+  document.body.style.color = txt;
+}
 </script>
 
 </body>
 </html>
-
-
-
