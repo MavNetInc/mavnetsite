@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MavNet Daily Message</title>
+<title>MavNet</title>
 
 <style>
 body{
@@ -9,25 +9,19 @@ body{
     background:#0b1020;
     color:white;
     text-align:center;
-    padding:30px;
+    padding:25px;
 }
 .box{
     background:#1b2340;
     border-radius:18px;
-    padding:20px;
-    margin:18px auto;
+    padding:18px;
+    margin:15px auto;
     max-width:750px;
 }
 .gold{background:#bfa100;}
 .purple{background:#6b3fd4;}
 .none{background:#555;}
 .small{font-size:14px;color:#bbb;}
-.banner{
-    background:#00aaff;
-    padding:10px;
-    border-radius:12px;
-    margin-bottom:15px;
-}
 </style>
 </head>
 
@@ -35,30 +29,15 @@ body{
 
 <h1>📡 MAVNET DAILY MESSAGE</h1>
 
-<div class="banner">
-If MavNet looks different today, a new system rollout is being tested.
-</div>
-
 <div class="box" id="dateBox">
 <h2 id="dateText"></h2>
 <h3 id="colorText"></h3>
 </div>
 
 <div class="box">
-<h3>🗓️ Schedule Status</h3>
-<p>No delays<br>No early dismissals<br>Message delivered on time</p>
-</div>
-
-<div class="box">
-<h3>🧑‍🔧 Operational Transparency Notice</h3>
-<p>Homer requested send-button access.<br>Request denied.</p>
-</div>
-
-<div class="box">
 <h3>🎓 Daily Fact</h3>
 <p id="factText"></p>
 </div>
-
 
 <div class="box">
 <h3>🧭 System Status</h3>
@@ -69,58 +48,42 @@ If MavNet looks different today, a new system rollout is being tested.
 
 <script>
 
-// ===== AUTO DATE =====
-let date = new Date();
-let options = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+// ===== GET LOCAL DATE =====
+let now = new Date();
+
+let year = now.getFullYear();
+let month = String(now.getMonth()+1).padStart(2,'0');
+let day = String(now.getDate()).padStart(2,'0');
+
+let today = `${year}-${month}-${day}`;
+
+// Pretty date
+let pretty = now.toLocaleDateString("en-US",
+{weekday:'long', year:'numeric', month:'long', day:'numeric'});
 document.getElementById("dateText").innerHTML =
-"Good morning. Today is " + date.toLocaleDateString("en-US", options);
+"Good morning. Today is " + pretty;
 
 
 // ===== PURPLE / GOLD CALENDAR =====
 const calendar = {
 
-// FEBRUARY
 "2026-02-17":"Gold",
 "2026-02-18":"Gold",
 "2026-02-19":"Purple",
 "2026-02-20":"Gold",
 
-// MARCH
-"2026-03-02":"Gold",
-"2026-03-03":"Purple",
-"2026-03-04":"Gold",
-"2026-03-05":"Purple",
-"2026-03-06":"Gold",
-
-"2026-03-09":"Purple",
-"2026-03-10":"Gold",
-"2026-03-11":"Purple",
-"2026-03-12":"Gold",
-"2026-03-13":"Purple",
-
-// APRIL (example start)
-"2026-04-01":"Purple",
-"2026-04-02":"Gold",
-"2026-04-03":"Purple",
-"2026-04-06":"Gold"
+// add more dates here
 };
 
-// Use LOCAL time instead of UTC
-let now = new Date();
-let year = now.getFullYear();
-let month = String(now.getMonth() + 1).padStart(2, '0');
-let day = String(now.getDate()).padStart(2, '0');
-let today = `${year}-${month}-${day}`;
 
+// ===== FIND COLOR =====
 let colorDay = calendar[today] || "None";
 
-
-// ===== DISPLAY COLOR =====
-if(colorDay=="Gold"){
+if(colorDay==="Gold"){
 document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";
 document.getElementById("dateBox").className="box gold";
 }
-else if(colorDay=="Purple"){
+else if(colorDay==="Purple"){
 document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";
 document.getElementById("dateBox").className="box purple";
 }
@@ -130,32 +93,29 @@ document.getElementById("dateBox").className="box none";
 }
 
 
-// ===== STATUS PANEL =====
-document.getElementById("statusText").innerHTML =
-"Color Day: "+colorDay+
-"<br>Delivery: Verified"+
-"<br>STOP Command: Active"+
-"<br>Homer Access: Read-only";
-
-    // ===== RANDOM FACTS =====
+// ===== RANDOM FACTS =====
 const facts = [
-
-"At universities like Virginia Tech, learning systems log the exact submission time of assignments.",
-"Many subway systems, like the London Underground, have stations older than most countries’ railroads.",
-"LED destination signs on trains refresh hundreds of times per second so letters look solid.",
-"Interactive projectors like the Epson BrightLink series track pen position using infrared sensors.",
-"Purple/Gold rotating schedules are used so no class is always stuck with the same period time.",
-"GitHub Pages can host a full website for free with just one HTML file.",
-"Ultra-short-throw projectors can create a 100-inch image from less than a foot away.",
-"Some universities run servers overnight so assignments stay accessible 24/7."
+"Assignments are timestamped exactly when submitted.",
+"Ultra-short-throw projectors can make a 100-inch image from inches away.",
+"Purple/Gold rotations keep class periods fair.",
+"Interactive pens use infrared tracking.",
+"Free GitHub Pages can host full websites.",
+"LED subway signs refresh hundreds of times per second.",
+"Learning systems at Virginia Tech log submission times automatically."
 ];
 
-let randomFact = facts[Math.floor(Math.random() * facts.length)];
-document.getElementById("factText").innerHTML = randomFact;
+let fact = facts[Math.floor(Math.random()*facts.length)];
+document.getElementById("factText").innerHTML = fact;
+
+
+// ===== STATUS =====
+document.getElementById("statusText").innerHTML =
+"Detected date: " + today +
+"<br>Color Day: " + colorDay +
+"<br>Delivery: Verified" +
+"<br>System Mode: Testing";
 
 </script>
 
 </body>
 </html>
-
-
