@@ -61,30 +61,6 @@ nav a {
 }
 nav a:hover {color:#bfa100;}
 
-/* ---------- DROPDOWN ---------- */
-.dropdown {
-    display:inline-block;
-    position:relative;
-}
-.dropdown-content {
-    display:none;
-    position:absolute;
-    background:#1b2340;
-    border-radius:8px;
-    min-width:150px;
-    z-index:1000;
-}
-.dropdown-content a {
-    display:block;
-    padding:8px 12px;
-    color:white;
-    text-decoration:none;
-}
-.dropdown-content a:hover {background:#2b3450;}
-.dropdown:hover .dropdown-content {
-    display:block;
-}
-
 /* ---------- REMINDERS ---------- */
 .reminder-item {
     text-align:left;
@@ -95,18 +71,6 @@ nav a:hover {color:#bfa100;}
 }
 .due-soon {border-left:4px solid #bfa100;}
 .overdue {border-left:4px solid #ff4444;}
-
-/* ---------- BADGES ---------- */
-#badges-box {
-    background:#000;
-    border-radius:18px;
-    padding:50px;
-    margin:20px auto;
-    max-width:600px;
-    color:#bbb;
-    font-size:1.2em;
-    border:2px dashed #555;
-}
 </style>
 </head>
 <body>
@@ -114,24 +78,18 @@ nav a:hover {color:#bfa100;}
 <!-- ---------- SYSTEM BANNER ---------- -->
 <div id="system-banner">
     ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
-    <span class="whats-new">✨ What's New: Added Help page, Reminders with Due Dates, Badges, and fun facts!</span>
+    <span class="whats-new">✨ What's New: Added Help page, Reminders with Due Dates, and fun facts!</span>
 </div>
 
-<!-- ---------- NAV WITH DROPDOWN ---------- -->
+<!-- ---------- NAV ---------- -->
 <nav>
     <a href="#home">Home</a>
     <a href="#reminders">Reminders</a>
-    <div class="dropdown">
-        <a href="javascript:void(0)">More Settings ▼</a>
-        <div class="dropdown-content">
-            <a href="#stats">Stats</a>
-            <a href="#preferences">Page Preferences</a>
-        </div>
-    </div>
+    <a href="#stats">Stats</a>
+    <a href="#preferences">Page Preferences</a>
     <a href="#updates">Updates</a>
     <a href="#suggestions">Suggestions</a>
     <a href="#help">Help</a>
-    <a href="#badges" onclick="showBadges()">Badges</a>
 </nav>
 
 <!-- ---------- HOME ---------- -->
@@ -152,14 +110,6 @@ nav a:hover {color:#bfa100;}
     <div class="box" id="home-reminders">
         <h3>📝 Reminders Due Soon</h3>
         <div id="reminderList"></div>
-    </div>
-</div>
-
-<!-- ---------- BADGES ---------- -->
-<div class="box" id="badges" style="display:none;">
-    <h1>🏅 Badges</h1>
-    <div id="badges-box">
-        Not yet implemented
     </div>
 </div>
 
@@ -236,12 +186,6 @@ reminders.forEach(rem=>{
     div.innerHTML = `<strong>${rem.text}</strong> - Due: ${rem.due}`;
     reminderList.appendChild(div);
 });
-
-// ===== SHOW BADGES FUNCTION =====
-function showBadges() {
-    document.getElementById("home").style.display = "none";
-    document.getElementById("badges").style.display = "block";
-}
 </script>
 
 </body>
