@@ -2,262 +2,165 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MavNet</title>
-
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#6b3fd4">
-
 <style>
-body{
+body {
     font-family: Arial, sans-serif;
     background:#0b1020;
     color:white;
     text-align:center;
-    padding:25px;
+    padding:20px;
 }
-.box{
+.box {
     background:#1b2340;
     border-radius:18px;
     padding:18px;
     margin:15px auto;
     max-width:750px;
 }
-.gold{background:#bfa100;}
-.purple{background:#6b3fd4;}
-.none{background:#555;}
-.small{font-size:14px;color:#bbb;}
-#system-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 9999; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
-#banner-alert { background-color: #ffcc00; color: #000; font-weight: bold; text-align: center; padding: 8px 0;}
-#banner-new { background-color: #1b2340; color: #fff; font-weight: bold; text-align: center; padding: 6px 0; font-size: 0.9em;}
-#nav { margin-top: 70px; text-align: center; }
-#nav button { background: #1b2340; color: white; border: none; padding: 10px 20px; margin: 0 5px; border-radius: 10px; cursor: pointer; font-weight: bold; }
-#nav button:hover { background: #6b3fd4; }
-#dropdown button { width: 150px; display:block; margin:5px auto; }
-.page { display: none; }
-.active-page { display: block; }
+.gold {background:#bfa100;}
+.purple {background:#6b3fd4;}
+.none {background:#555;}
+.small {font-size:14px;color:#bbb;}
+input {padding:5px; border-radius:5px; border:none; margin:3px;}
+button {padding:5px 10px; border-radius:5px; border:none; background:#6b3fd4; color:white; cursor:pointer;}
+button:hover {background:#bfa100;}
+.wordle-row {display:flex; justify-content:center; margin:5px 0;}
+.wordle-cell {width:40px; height:40px; border:2px solid #555; margin:2px; display:flex; justify-content:center; align-items:center; font-weight:bold; font-size:1.2em; text-transform:uppercase;}
+.correct {background:green; color:white; border:none;}
+.present {background:gold; color:white; border:none;}
+.absent {background:#555; color:white; border:none;}
 </style>
 </head>
 <body>
 
-<!-- System Banner -->
-<div id="system-banner">
-  <div id="banner-alert">⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️</div>
-  <div id="banner-new">✨ What's New: Page Preferences tab added for custom colors! ✨</div>
-</div>
+<h1 id="greeting">Good Morning</h1>
 
-<!-- Navigation -->
-<div id="nav">
-  <div style="display:inline-block; position:relative;">
-    <button onclick="toggleDropdown()">More Settings ▼</button>
-    <div id="dropdown" style="display:none; position:absolute; background:#1b2340; border-radius:10px; padding:5px; top:35px; left:0; z-index:999;">
-      <button onclick="showPage('stats')">Stats</button>
-      <button onclick="showPage('prefs')">Page Preferences</button>
-      <button onclick="showPage('updates')">Updates</button>
-      <button onclick="showPage('suggestions')">Suggestions</button>
-      <button onclick="showPage('help')">Help</button>
-    </div>
-  </div>
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('notifications')">Notifications</button>
-  <button onclick="showPage('todos')">Reminders / To-Dos</button>
-</div>
-
-<!-- Pages -->
-<div id="home" class="page active-page">
-<h1>📡 MAVNET DAILY MESSAGE</h1>
 <div class="box" id="dateBox">
-<h2 id="dateText"></h2>
-<h3 id="colorText"></h3>
+  <h2 id="dateText"></h2>
+  <h3 id="colorText"></h3>
 </div>
+
 <div class="box">
-<h3>🎓 Daily Fact</h3>
-<p id="factText"></p>
+  <h3>🎓 Daily Fact</h3>
+  <p id="factText"></p>
 </div>
+
 <div class="box">
-<h3>⏰ Upcoming Reminders</h3>
-<ul id="homeTodoList"></ul>
+  <h3>📝 Reminders / To-Dos</h3>
+  <input type="text" id="todoInput" placeholder="Enter reminder">
+  <input type="date" id="todoDue">
+  <button onclick="addTodo()">Add</button>
+  <ul id="todoList"></ul>
+  <button onclick="clearTodos()">Clear All</button>
 </div>
+
 <div class="box">
-<h3>🧭 System Status</h3>
-<p id="statusText"></p>
+  <h3>🟩 Wordle Daily Challenge</h3>
+  <div id="wordleGrid"></div>
+  <input type="text" id="wordleInput" maxlength="5" placeholder="5-letter word">
+  <button onclick="guessWord()">Guess</button>
+  <p id="wordleFeedback" class="small"></p>
 </div>
-</div>
-
-<div id="notifications" class="page">
-  <div class="box">
-    <h2>📢 Recent Notifications</h2>
-    <ul id="notificationList">
-      <li>⚠️ Scheduled system maintenance today at 3 PM.</li>
-      <li>📌 New daily facts added to the archive.</li>
-      <li>💡 Tip: Refresh page to get the latest color day info.</li>
-      <li>🛠️ Minor bug fixes applied last night.</li>
-      <li>🔔 New feature: Page Preferences tab for custom colors!</li>
-    </ul>
-  </div>
-</div>
-
-<div id="prefs" class="page">
-  <div class="box">
-    <h2>⚙️ Page Preferences</h2>
-    <label for="bgColor">Background color:</label>
-    <input type="color" id="bgColor" name="bgColor" value="#0b1020"><br><br>
-    <label for="textColor">Text color:</label>
-    <input type="color" id="textColor" name="textColor" value="#ffffff"><br><br>
-    <button onclick="applyPrefs()">Apply</button>
-  </div>
-</div>
-
-<div id="stats" class="page">
-  <div class="box">
-    <h2>📊 MavNet Stats</h2>
-    <p>Total Reminders: <span id="statTotalTodos"></span></p>
-    <p>Upcoming Reminders: <span id="statUpcomingTodos"></span></p>
-    <p>Overdue Reminders: <span id="statOverdueTodos"></span></p>
-    <p>Gold Days So Far: <span id="statGoldDays"></span></p>
-    <p>Purple Days So Far: <span id="statPurpleDays"></span></p>
-  </div>
-</div>
-
-<div id="updates" class="page">
-  <div class="box" style="max-height:400px; overflow-y:auto;">
-    <h2>📜 All Updates</h2>
-    <ul id="allUpdates"></ul>
-  </div>
-</div>
-
-<div id="suggestions" class="page">
-  <div class="box">
-    <h2>💡 Submit a Suggestion</h2>
-    <input type="text" id="suggestName" placeholder="Your name" style="width:60%;padding:5px;"><br><br>
-    <textarea id="suggestText" placeholder="Your suggestion" style="width:60%;height:100px;padding:5px;"></textarea><br><br>
-    <button onclick="sendSuggestion()">Submit</button>
-    <p id="suggestFeedback" style="margin-top:10px;color:#ffcc00;"></p>
-  </div>
-</div>
-
-<div id="todos" class="page">
-  <div class="box">
-    <h2>📝 Reminders / To-Dos</h2>
-    <input type="text" id="todoInput" placeholder="Enter a reminder" style="width:50%;padding:5px;">
-    <input type="date" id="todoDue" style="padding:5px;">
-    <button onclick="addTodo()">Add</button>
-    <ul id="todoList"></ul>
-    <button onclick="clearTodos()" style="margin-top:10px;">Clear All</button>
-  </div>
-</div>
-
-<div id="help" class="page">
-  <div class="box" style="max-width:800px; text-align:left;">
-    <h2>❓ MavNet Help & How-To</h2>
-    <ol>
-      <li><strong>Home:</strong> Daily message, daily fact, upcoming reminders.</li>
-      <li><strong>Notifications:</strong> Latest system notices and tips.</li>
-      <li><strong>Reminders / To-Dos:</strong> Add reminders; click to remove; stored in browser.</li>
-      <li><strong>Page Preferences:</strong> Change colors and click Apply.</li>
-      <li><strong>Stats:</strong> Total, upcoming, overdue, Gold/Purple days.</li>
-      <li><strong>Updates:</strong> Scrollable list of past updates.</li>
-      <li><strong>Suggestions:</strong> Email feedback directly.</li>
-      <li><strong>More Settings Dropdown:</strong> Quick access to all tabs.</li>
-      <li><strong>System Banner:</strong> Always shows notices and updates.</li>
-    </ol>
-    <p>Questions? Email <a href="mailto:your-email@example.com" style="color:#ffcc00;">MavNet Support</a></p>
-  </div>
-</div>
-
-<p class="small">© 2026 MavNet Industries LLC</p>
 
 <script>
+// ===== TIME GREETING =====
+function updateGreeting(){
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? "Good Morning" : (hour < 18 ? "Good Afternoon" : "Good Evening");
+    document.getElementById("greeting").innerText = greeting;
+}
+updateGreeting();
+
 // ===== DATE & COLOR DAY =====
 let now = new Date();
 let year = now.getFullYear(), month = String(now.getMonth()+1).padStart(2,'0'), day = String(now.getDate()).padStart(2,'0');
 let today = `${year}-${month}-${day}`;
-let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
-document.getElementById("dateText").innerText = "Good morning. Today is " + pretty;
+document.getElementById("dateText").innerText = "Today is " + now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
 
 const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold"};
 let colorDay = calendar[today] || "None";
-if(colorDay==="Gold"){document.getElementById("colorText").innerText="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
-else if(colorDay==="Purple"){document.getElementById("colorText").innerText="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
-else{document.getElementById("colorText").innerText="No Color Day";document.getElementById("dateBox").className="box none";}
+const dateBox = document.getElementById("dateBox");
+if(colorDay==="Gold"){document.getElementById("colorText").innerText="Today is a Gold Day 🟡"; dateBox.className="box gold";}
+else if(colorDay==="Purple"){document.getElementById("colorText").innerText="Today is a Purple Day 🟣"; dateBox.className="box purple";}
+else{document.getElementById("colorText").innerText="No Color Day"; dateBox.className="box none";}
 
 // ===== DAILY FACT =====
-const facts = ["Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.","Ultra-short-throw projectors can make a 100-inch image from less than a foot away.","Interactive projectors track pen position using infrared cameras.","GitHub Pages can host a full website for free using only one HTML file.","LED destination signs refresh hundreds of times per second so letters look solid.","The London Underground has stations older than most electric railways.","Some colleges automatically lock assignments at the deadline with no override.","Projectors lose brightness as lamps age, even if they still turn on.","Color-day rotations exist so no class always meets at the hardest time of day.","Many subway maps are diagrammatic and not geographically accurate.","Touch projectors must be recalibrated if the wall mount shifts even slightly.","University attendance systems often sync with ID card scans.","Short-throw projectors reduce shadows when teachers stand near the board.","Learning management systems can detect late uploads automatically.","Most classroom projectors run quieter in Eco mode.","Some subway stations were built before elevators were invented.","Digital whiteboard pens usually don’t use ink at all.","Projector focus should be adjusted after warm-up, not immediately after power-on.","Many universities expect students to check email daily.","LED matrices use multiplexing to control thousands of lights with fewer wires.","Some projectors store calibration data internally so moving them breaks alignment.","College lecture recordings are often auto-uploaded overnight.","Subway trains use destination signs so riders can identify short-turn trains.","Projector filters need cleaning or airflow drops.","Assignment timestamps are stored in server logs even if deleted later.","Many subway systems have ghost platforms no longer in use.","Interactive boards can detect multiple pens at once.","GitHub keeps a history of every file change automatically.","Universities rarely accept 'I didn’t see it online' as an excuse.","Short-throw lenses are shaped differently than standard projector lenses.","Some subway stations have curved platforms that require special mirrors.","Projector keystone correction reduces image sharpness.","Learning systems can show professors how long a quiz was open.","Many colleges back up assignments automatically.","LED boards on trains are readable in sunlight because of high refresh rates.","Most classroom projectors are mounted slightly off-center on purpose.","Subway maps often use 45° angles to stay readable.","Online assignments usually save drafts automatically.","Projector bulbs dim faster if turned on and off repeatedly.","Some subway systems run maintenance trains overnight.","Interactive pens communicate using infrared or ultrasonic signals.","Universities keep records of grade changes for auditing.","Projector screens reflect light differently depending on material.","Some subway stations were renamed but locals still use the old names.","MavNet reminders are more reliable than memory alone.","Skye once recalibrated a projector faster than anyone expected.","Everleigh still thinks engine noise improves focus.","Consistency builds trust. Alarms build consistency."];
-function getDailyFact(){let seed=today.replace(/-/g,"");let index=parseInt(seed)%facts.length;return facts[index];}
+const facts = [
+  "MavNet reminders beat memory every time.",
+  "Ultra-short-throw projectors can make a 100-inch image from less than a foot away.",
+  "LED destination signs refresh hundreds of times per second.",
+  "Interactive boards can detect multiple pens at once."
+];
+function getDailyFact(){
+    let seed = today.replace(/-/g,"");
+    let index = parseInt(seed)%facts.length;
+    return facts[index];
+}
 document.getElementById("factText").innerText = getDailyFact();
 
-// ===== STATUS =====
-document.getElementById("statusText").innerHTML = `Detected date: ${today}<br>Color Day: ${colorDay}<br>Delivery: Verified<br>System Mode: Testing`;
-
-// ===== NAVIGATION =====
-function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active-page'));document.getElementById(pageId).classList.add('active-page');document.getElementById('dropdown').style.display='none';}
-function toggleDropdown(){const d=document.getElementById('dropdown');d.style.display=d.style.display==='none'?'block':'none';}
-
-// ===== PAGE PREFERENCES =====
-function applyPrefs(){document.body.style.background=document.getElementById('bgColor').value;document.body.style.color=document.getElementById('textColor').value;}
-
-// ===== ROTATING BANNER =====
-const updates = ["Page Preferences tab added for custom colors!","New daily facts added to the archive.","Scheduled maintenance today at 3 PM.","Minor bug fixes applied last night."];
-let currentUpdate = 0;
-function rotateBanner(){document.getElementById("banner-new").innerText="✨ What's New: "+updates[currentUpdate]+" ✨";currentUpdate=(currentUpdate+1)%updates.length;}
-setInterval(rotateBanner,5000);rotateBanner();
-
-// ===== ALL UPDATES LIST =====
-function populateUpdates(){const ul=document.getElementById('allUpdates');ul.innerHTML="";updates.forEach(u=>{const li=document.createElement('li');li.textContent=u;ul.appendChild(li);});}
-populateUpdates();
-
-// ===== TO-DOS / REMINDERS =====
+// ===== TODOS =====
 function loadTodos(){
-    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
-    const ul=document.getElementById('todoList');ul.innerHTML="";
+    const todos = JSON.parse(localStorage.getItem('mavnetTodos'))||[];
+    const ul = document.getElementById('todoList'); ul.innerHTML="";
     todos.forEach((item,index)=>{
         const li=document.createElement('li');
-        li.textContent=item.due?`${item.text} (Due: ${item.due})`:item.text;
-        li.onclick=()=>{todos.splice(index,1);localStorage.setItem('mavnetTodos',JSON.stringify(todos));loadTodos();updateStats();};
+        li.textContent = item.due?`${item.text} (Due: ${item.due})`:item.text;
+        li.onclick=()=>{todos.splice(index,1); localStorage.setItem('mavnetTodos',JSON.stringify(todos)); loadTodos();};
         ul.appendChild(li);
     });
-    const homeUl=document.getElementById('homeTodoList');
-    homeUl.innerHTML="";
-    const todayDate=new Date().toISOString().split('T')[0];
-    const upcoming=todos.filter(t=>t.due&&t.due>=todayDate).sort((a,b)=>a.due.localeCompare(b.due));
-    upcoming.forEach(item=>{const li=document.createElement('li');li.textContent=`${item.text} (Due: ${item.due})`;homeUl.appendChild(li);});
-    if(upcoming.length===0){homeUl.innerHTML="<li>No upcoming reminders.</li>";}
-    updateStats();
 }
-function addTodo(){const textInput=document.getElementById('todoInput').value.trim();const dueInput=document.getElementById('todoDue').value;if(!textInput)return;const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];todos.push({text:textInput,due:dueInput});localStorage.setItem('mavnetTodos',JSON.stringify(todos));document.getElementById('todoInput').value="";document.getElementById('todoDue').value="";loadTodos();}
-function clearTodos(){localStorage.removeItem('mavnetTodos');loadTodos();}
-
-// ===== STATS =====
-function updateStats(){
-    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
-    const todayDate=new Date().toISOString().split('T')[0];
-    document.getElementById('statTotalTodos').innerText=todos.length;
-    document.getElementById('statUpcomingTodos').innerText=todos.filter(t=>t.due&&t.due>=todayDate).length;
-    document.getElementById('statOverdueTodos').innerText=todos.filter(t=>t.due&&t.due<todayDate).length;
-    const colorCounts={Gold:0,Purple:0};
-    Object.values(calendar).forEach(c=>{if(c==='Gold')colorCounts.Gold++;if(c==='Purple')colorCounts.Purple++;});
-    document.getElementById('statGoldDays').innerText=colorCounts.Gold;
-    document.getElementById('statPurpleDays').innerText=colorCounts.Purple;
+function addTodo(){
+    const text = document.getElementById('todoInput').value.trim();
+    const due = document.getElementById('todoDue').value;
+    if(!text)return;
+    const todos = JSON.parse(localStorage.getItem('mavnetTodos'))||[];
+    todos.push({text,due});
+    localStorage.setItem('mavnetTodos',JSON.stringify(todos));
+    document.getElementById('todoInput').value=""; document.getElementById('todoDue').value="";
+    loadTodos();
 }
+function clearTodos(){localStorage.removeItem('mavnetTodos'); loadTodos();}
 loadTodos();
 
-// ===== SUGGESTIONS =====
-function sendSuggestion(){
-    const name=document.getElementById('suggestName').value.trim();
-    const text=document.getElementById('suggestText').value.trim();
-    if(!text)return alert("Please enter a suggestion.");
-    window.location.href=`mailto:your-email@example.com?subject=Suggestion from ${encodeURIComponent(name||"Anonymous")}&body=${encodeURIComponent(text)}`;
-    document.getElementById('suggestFeedback').innerText="Opening your email client...";
-}
+// ===== WORDLE =====
+const wordleWords = ["APPLE","BRAIN","CHAIR","DELTA","EAGLE"];
+let dailyIndex = parseInt(today.replace(/-/g,"")) % wordleWords.length;
+const dailyWord = wordleWords[dailyIndex];
+const maxGuesses = 6;
+let currentGuess = 0;
 
-// ===== SERVICE WORKER =====
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js')
-        .then(()=>console.log("Service Worker registered"))
-        .catch(err=>console.log("SW registration failed: ", err));
+function createGrid(){
+    const grid = document.getElementById("wordleGrid");
+    grid.innerHTML="";
+    for(let r=0;r<maxGuesses;r++){
+        const row = document.createElement('div'); row.className="wordle-row";
+        for(let c=0;c<5;c++){
+            const cell = document.createElement('div'); cell.className="wordle-cell"; row.appendChild(cell);
+        }
+        grid.appendChild(row);
+    }
+}
+createGrid();
+
+function guessWord(){
+    const input = document.getElementById('wordleInput').value.toUpperCase();
+    if(input.length!==5){alert("Enter a 5-letter word."); return;}
+    if(currentGuess>=maxGuesses){alert("No more guesses."); return;}
+    const row = document.getElementsByClassName("wordle-row")[currentGuess];
+    for(let i=0;i<5;i++){
+        row.children[i].innerText = input[i];
+        if(input[i] === dailyWord[i]) row.children[i].className="wordle-cell correct";
+        else if(dailyWord.includes(input[i])) row.children[i].className="wordle-cell present";
+        else row.children[i].className="wordle-cell absent";
+    }
+    currentGuess++;
+    document.getElementById('wordleInput').value="";
+    if(input===dailyWord){document.getElementById('wordleFeedback').innerText="🎉 Correct!"; currentGuess=maxGuesses;}
+    else if(currentGuess===maxGuesses){document.getElementById('wordleFeedback').innerText="❌ Out of guesses! Word was "+dailyWord;}
 }
 </script>
 
+<p class="small">© 2026 MavNet Industries LLC</p>
 </body>
 </html>
