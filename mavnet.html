@@ -105,7 +105,13 @@ const calendar = {
 "2026-04-06":"Gold"
 };
 
-let today = new Date().toISOString().split("T")[0];
+// Use LOCAL time instead of UTC
+let now = new Date();
+let year = now.getFullYear();
+let month = String(now.getMonth() + 1).padStart(2, '0');
+let day = String(now.getDate()).padStart(2, '0');
+let today = `${year}-${month}-${day}`;
+
 let colorDay = calendar[today] || "None";
 
 
@@ -151,4 +157,5 @@ document.getElementById("factText").innerHTML = randomFact;
 
 </body>
 </html>
+
 
