@@ -115,6 +115,11 @@ body{
 </div>
 
 <div class="box">
+<h3>⏰ Upcoming Reminders</h3>
+<ul id="homeTodoList"></ul>
+</div>
+
+<div class="box">
 <h3>🧭 System Status</h3>
 <p id="statusText"></p>
 </div>
@@ -153,7 +158,8 @@ body{
 <div id="todos" class="page">
   <div class="box">
     <h2>📝 Reminders / To-Dos</h2>
-    <input type="text" id="todoInput" placeholder="Enter a reminder" style="width:70%;padding:5px;">
+    <input type="text" id="todoInput" placeholder="Enter a reminder" style="width:50%;padding:5px;">
+    <input type="date" id="todoDue" style="padding:5px;">
     <button onclick="addTodo()">Add</button>
     <ul id="todoList"></ul>
     <button onclick="clearTodos()" style="margin-top:10px;">Clear All</button>
@@ -293,39 +299,63 @@ function rotateBanner() {
   document.getElementById("banner-new").innerText = "✨ What's New: " + updates[currentUpdate] + " ✨";
   currentUpdate = (currentUpdate + 1) % updates.length;
 }
-setInterval(rotateBanner, 5000); // rotates every 5 seconds
-rotateBanner(); // initial display
+setInterval(rotateBanner, 5000);
+rotateBanner();
 
-// ===== To-Do / Reminders =====
+// ===== To-Do / Reminders with Due Dates =====
 function loadTodos() {
-  const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
-  const ul = document.getElementById('todoList');
-  ul.innerHTML = "";
-  todos.forEach((item, index) => {
-    const li = document.createElement('li');
-    li.textContent = item;
-    li.onclick = () => {
-      todos.splice(index,1);
-      localStorage.setItem('mavnetTodos', JSON.stringify(todos));
-      loadTodos();
-    };
-    ul.appendChild(li);
-  });
+    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
+    const ul = document.getElementById('todoList');
+    ul.innerHTML = "";
+    todos.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = item.due ? `${item.text} (Due: ${item.due})` : item.text;
+        li.onclick = () => {
+            todos.splice(index,1);
+            localStorage.setItem('mavnetTodos', JSON.stringify(todos));
+            loadTodos();
+        };
+        ul.appendChild(li);
+    });
+    updateHomeTodos();
 }
+
 function addTodo() {
-  const input = document.getElementById('todoInput');
-  const value = input.value.trim();
-  if(value === "") return;
-  const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
-  todos.push(value);
-  localStorage.setItem('mavnetTodos', JSON.stringify(todos));
-  input.value = "";
-  loadTodos();
+    const textInput = document.getElementById('todoInput').value.trim();
+    const dueInput = document.getElementById('todoDue').value;
+    if(!textInput) return;
+
+    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
+    todos.push({ text: textInput, due: dueInput });
+    localStorage.setItem('mavnetTodos', JSON.stringify(todos));
+    document.getElementById('todoInput').value = "";
+    document.getElementById('todoDue').value = "";
+    loadTodos();
 }
+
 function clearTodos() {
-  localStorage.removeItem('mavnetTodos');
-  loadTodos();
+    localStorage.removeItem('mavnetTodos');
+    loadTodos();
 }
+
+function updateHomeTodos() {
+    const todos = JSON.parse(localStorage.getItem('mavnetTodos')) || [];
+    const ul = document.getElementById('homeTodoList');
+    ul.innerHTML = "";
+    const todayDate = new Date().toISOString().split('T')[0];
+    const upcoming = todos
+        .filter(t => t.due && t.due >= todayDate)
+        .sort((a,b) => a.due.localeCompare(b.due));
+    upcoming.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.text} (Due: ${item.due})`;
+        ul.appendChild(li);
+    });
+    if(upcoming.length === 0){
+        ul.innerHTML = "<li>No upcoming reminders.</li>";
+    }
+}
+
 loadTodos();
 
 </script>
