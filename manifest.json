@@ -1,0 +1,21 @@
+{
+  "name": "MavNet",
+  "short_name": "MavNet",
+  "description": "Daily messages, reminders, and color days.",
+  "start_url": "mavnetsite.html",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#6b3fd4",
+  "icons": [
+    {
+      "src": "icons/mavnet-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/mavnet-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
