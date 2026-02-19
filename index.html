@@ -30,19 +30,29 @@ body{
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #ffcc00; /* yellow alert */
-    color: #000;
-    font-weight: bold;
-    text-align: center;
-    padding: 12px 0;
     z-index: 9999;
     font-family: Arial, sans-serif;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+#banner-alert {
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 0;
+}
+#banner-new {
+    background-color: #1b2340;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 0.9em;
+}
 
 /* Navigation */
 #nav {
-    margin: 20px 0;
+    margin-top: 70px; /* push below banner */
     text-align: center;
 }
 #nav button {
@@ -81,41 +91,12 @@ body{
   </div>
 </div>
 
-<style>
-/* Banner styles */
-#system-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-#banner-alert {
-    background-color: #ffcc00; /* yellow alert */
-    color: #000;
-    font-weight: bold;
-    text-align: center;
-    padding: 8px 0;
-}
-
-#banner-new {
-    background-color: #1b2340; /* dark secondary row */
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 0.9em;
-}
-
-/* Push content down to avoid overlap */
-body {
-    padding-top: 90px; /* adjust based on banner height */
-}
-</style>
-
+<!-- Navigation -->
+<div id="nav">
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('notifications')">Notifications</button>
+  <button onclick="showPage('prefs')">Page Preferences</button>
+</div>
 
 <!-- Home Page -->
 <div id="home" class="page active-page">
@@ -211,7 +192,7 @@ document.getElementById("colorText").innerHTML="No Color Day";
 document.getElementById("dateBox").className="box none";
 }
 
-// ===== RANDOM FACTS =====
+// ===== DAILY FACT (fixed per day) =====
 const facts = [
 "Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.",
 "Ultra-short-throw projectors can make a 100-inch image from less than a foot away.",
@@ -263,8 +244,13 @@ const facts = [
 "Consistency builds trust. Alarms build consistency."
 ];
 
-let fact = facts[Math.floor(Math.random()*facts.length)];
-document.getElementById("factText").innerHTML = fact;
+function getDailyFact() {
+  let seed = today.replace(/-/g, "");
+  let index = parseInt(seed) % facts.length;
+  return facts[index];
+}
+
+document.getElementById("factText").innerHTML = getDailyFact();
 
 // ===== STATUS =====
 document.getElementById("statusText").innerHTML =
@@ -286,8 +272,22 @@ function applyPrefs() {
   document.body.style.background = bg;
   document.body.style.color = txt;
 }
+
+// ===== Rotating "What's New" banner =====
+const updates = [
+  "Page Preferences tab added for custom colors!",
+  "New daily facts added to the archive.",
+  "Scheduled maintenance today at 3 PM.",
+  "Minor bug fixes applied last night."
+];
+let currentUpdate = 0;
+function rotateBanner() {
+  document.getElementById("banner-new").innerText = "✨ What's New: " + updates[currentUpdate] + " ✨";
+  currentUpdate = (currentUpdate + 1) % updates.length;
+}
+setInterval(rotateBanner, 5000); // rotates every 5 seconds
+rotateBanner(); // initial display
 </script>
 
 </body>
 </html>
-
