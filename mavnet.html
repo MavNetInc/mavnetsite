@@ -55,10 +55,10 @@ If MavNet looks different today, a new system rollout is being tested.
 </div>
 
 <div class="box">
-<h3>🎓 College Fact</h3>
-<p>Assignments are timestamped exactly when submitted.<br>
-There is no “I thought it was a day off” checkbox.</p>
+<h3>🎓 Daily Fact</h3>
+<p id="factText"></p>
 </div>
+
 
 <div class="box">
 <h3>🧭 System Status</h3>
@@ -131,7 +131,24 @@ document.getElementById("statusText").innerHTML =
 "<br>STOP Command: Active"+
 "<br>Homer Access: Read-only";
 
+    // ===== RANDOM FACTS =====
+const facts = [
+
+"At universities like Virginia Tech, learning systems log the exact submission time of assignments.",
+"Many subway systems, like the London Underground, have stations older than most countries’ railroads.",
+"LED destination signs on trains refresh hundreds of times per second so letters look solid.",
+"Interactive projectors like the Epson BrightLink series track pen position using infrared sensors.",
+"Purple/Gold rotating schedules are used so no class is always stuck with the same period time.",
+"GitHub Pages can host a full website for free with just one HTML file.",
+"Ultra-short-throw projectors can create a 100-inch image from less than a foot away.",
+"Some universities run servers overnight so assignments stay accessible 24/7."
+];
+
+let randomFact = facts[Math.floor(Math.random() * facts.length)];
+document.getElementById("factText").innerHTML = randomFact;
+
 </script>
 
 </body>
 </html>
+
