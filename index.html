@@ -322,4 +322,10 @@ function sendSuggestion(){
     const name=document.getElementById('suggestName').value.trim();
     const text=document.getElementById('suggestText').value.trim();
     if(!text)return alert("Please enter a suggestion.");
-   
+    window.location.href=`mailto:your-email@example.com?subject=Suggestion from ${encodeURIComponent(name||"Anonymous")}&body=${encodeURIComponent(text)}`;
+    document.getElementById('suggestFeedback').innerText="Opening your email client...";
+}
+</script>
+
+</body>
+</html>
