@@ -73,15 +73,49 @@ body{
 
 <!-- System Banner -->
 <div id="system-banner">
-  ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
+  <div id="banner-alert">
+    ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
+  </div>
+  <div id="banner-new">
+    ✨ What's New: Page Preferences tab added for custom colors! ✨
+  </div>
 </div>
 
-<!-- Navigation -->
-<div id="nav">
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('notifications')">Notifications</button>
-  <button onclick="showPage('prefs')">Page Preferences</button>
-</div>
+<style>
+/* Banner styles */
+#system-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#banner-alert {
+    background-color: #ffcc00; /* yellow alert */
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 0;
+}
+
+#banner-new {
+    background-color: #1b2340; /* dark secondary row */
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 0.9em;
+}
+
+/* Push content down to avoid overlap */
+body {
+    padding-top: 90px; /* adjust based on banner height */
+}
+</style>
+
 
 <!-- Home Page -->
 <div id="home" class="page active-page">
@@ -256,3 +290,4 @@ function applyPrefs() {
 
 </body>
 </html>
+
