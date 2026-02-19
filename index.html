@@ -3,14 +3,12 @@
 <head>
 <title>MavNet</title>
 <style>
-/* ---------- BODY & GENERAL ---------- */
 body{
     font-family: Arial, sans-serif;
     background:#0b1020;
     color:white;
     text-align:center;
-    padding-top:100px; /* space for banner */
-    margin:0;
+    padding:25px;
 }
 .box{
     background:#1b2340;
@@ -24,13 +22,13 @@ body{
 .none{background:#555;}
 .small{font-size:14px;color:#bbb;}
 
-/* ---------- BANNER ---------- */
+/* Banner styles */
 #system-banner {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #ffcc00; 
+    background-color: #ffcc00;
     color: #000;
     font-weight: bold;
     text-align: center;
@@ -45,7 +43,7 @@ body{
     margin-top:4px;
 }
 
-/* ---------- NAV ---------- */
+/* Nav and dropdown */
 nav {
     background:#1b2340;
     border-radius:12px;
@@ -60,8 +58,30 @@ nav a {
     font-weight:bold;
 }
 nav a:hover {color:#bfa100;}
+.dropdown {
+    display:inline-block;
+    position:relative;
+}
+.dropdown-content {
+    display:none;
+    position:absolute;
+    background:#1b2340;
+    border-radius:8px;
+    min-width:150px;
+    z-index:1000;
+}
+.dropdown-content a {
+    display:block;
+    padding:8px 12px;
+    color:white;
+    text-decoration:none;
+}
+.dropdown-content a:hover {background:#2b3450;}
+.dropdown:hover .dropdown-content {
+    display:block;
+}
 
-/* ---------- REMINDERS ---------- */
+/* Reminders */
 .reminder-item {
     text-align:left;
     margin:5px 0;
@@ -71,46 +91,77 @@ nav a:hover {color:#bfa100;}
 }
 .due-soon {border-left:4px solid #bfa100;}
 .overdue {border-left:4px solid #ff4444;}
+
+/* Badges */
+#badges-box {
+    background:#000;
+    border-radius:18px;
+    padding:50px;
+    margin:20px auto;
+    max-width:600px;
+    color:#bbb;
+    font-size:1.2em;
+    border:2px dashed #555;
+}
 </style>
 </head>
+
 <body>
 
-<!-- ---------- SYSTEM BANNER ---------- -->
+<!-- Banner -->
 <div id="system-banner">
-    ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
-    <span class="whats-new">✨ What's New: Added Help page, Reminders with Due Dates, and fun facts!</span>
+⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
+<span class="whats-new">✨ What's New: Added Help page, Reminders with Due Dates, Badges, and fun facts!</span>
 </div>
 
-<!-- ---------- NAV ---------- -->
+<!-- Navigation with dropdown -->
 <nav>
     <a href="#home">Home</a>
     <a href="#reminders">Reminders</a>
-    <a href="#stats">Stats</a>
-    <a href="#preferences">Page Preferences</a>
+    <div class="dropdown">
+        <a href="javascript:void(0)">More Settings ▼</a>
+        <div class="dropdown-content">
+            <a href="#stats">Stats</a>
+            <a href="#preferences">Page Preferences</a>
+        </div>
+    </div>
     <a href="#updates">Updates</a>
     <a href="#suggestions">Suggestions</a>
     <a href="#help">Help</a>
+    <a href="#badges" onclick="showBadges()">Badges</a>
 </nav>
 
-<!-- ---------- HOME ---------- -->
+<!-- Home Section -->
 <div class="box" id="home">
-    <h1>📡 MAVNET DAILY MESSAGE</h1>
-    <div class="box" id="dateBox">
-        <h2 id="dateText"></h2>
-        <h3 id="colorText"></h3>
-    </div>
-    <div class="box">
-        <h3>🎓 Daily Fact</h3>
-        <p id="factText"></p>
-    </div>
-    <div class="box">
-        <h3>🧭 System Status</h3>
-        <p id="statusText"></p>
-    </div>
-    <div class="box" id="home-reminders">
-        <h3>📝 Reminders Due Soon</h3>
-        <div id="reminderList"></div>
-    </div>
+<h1>📡 MAVNET DAILY MESSAGE</h1>
+
+<div class="box" id="dateBox">
+<h2 id="dateText"></h2>
+<h3 id="colorText"></h3>
+</div>
+
+<div class="box">
+<h3>🎓 Daily Fact</h3>
+<p id="factText"></p>
+</div>
+
+<div class="box">
+<h3>🧭 System Status</h3>
+<p id="statusText"></p>
+</div>
+
+<div class="box" id="home-reminders">
+<h3>📝 Reminders Due Soon</h3>
+<div id="reminderList"></div>
+</div>
+</div>
+
+<!-- Badges Section -->
+<div class="box" id="badges" style="display:none;">
+<h1>🏅 Badges</h1>
+<div id="badges-box">
+Not yet implemented
+</div>
 </div>
 
 <script>
@@ -125,12 +176,12 @@ document.getElementById("dateText").innerHTML = "Good morning. Today is " + pret
 
 // ===== PURPLE / GOLD CALENDAR =====
 const calendar = {
-    "2026-02-17":"Gold",
-    "2026-02-18":"Gold",
-    "2026-02-19":"Purple",
-    "2026-02-20":"Gold",
-    "2026-02-23":"Purple",
-    "2026-02-24":"Gold",
+"2026-02-17":"Gold",
+"2026-02-18":"Gold",
+"2026-02-19":"Purple",
+"2026-02-20":"Gold",
+"2026-02-23":"Purple",
+"2026-02-24":"Gold",
 };
 let colorDay = calendar[today] || "None";
 if(colorDay==="Gold"){
@@ -139,23 +190,23 @@ if(colorDay==="Gold"){
 } else if(colorDay==="Purple"){
     document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";
     document.getElementById("dateBox").className="box purple";
-} else {
+} else{
     document.getElementById("colorText").innerHTML="No Color Day";
     document.getElementById("dateBox").className="box none";
 }
 
 // ===== DAILY FACT (fixed per day) =====
 const facts = [
-    "Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.",
-    "Ultra-short-throw projectors can make a 100-inch image from less than a foot away.",
-    "Interactive projectors track pen position using infrared cameras.",
-    "GitHub Pages can host a full website for free using only one HTML file.",
-    "LED destination signs refresh hundreds of times per second so letters look solid.",
-    "The London Underground has stations older than most electric railways.",
-    "Some colleges automatically lock assignments at the deadline with no override.",
-    "Projectors lose brightness as lamps age, even if they still turn on.",
-    "Color-day rotations exist so no class always meets at the hardest time of day.",
-    "Many subway maps are diagrammatic and not geographically accurate."
+"Learning systems at universities like Virginia Tech log the exact second an assignment is submitted.",
+"Ultra-short-throw projectors can make a 100-inch image from less than a foot away.",
+"Interactive projectors track pen position using infrared cameras.",
+"GitHub Pages can host a full website for free using only one HTML file.",
+"LED destination signs refresh hundreds of times per second so letters look solid.",
+"The London Underground has stations older than most electric railways.",
+"Some colleges automatically lock assignments at the deadline with no override.",
+"Projectors lose brightness as lamps age, even if they still turn on.",
+"Color-day rotations exist so no class always meets at the hardest time of day.",
+"Many subway maps are diagrammatic and not geographically accurate."
 ];
 let factIndex = today.split('-').join('');
 let fact = facts[factIndex % facts.length];
@@ -168,14 +219,13 @@ document.getElementById("statusText").innerHTML =
 "<br>Delivery: Verified" +
 "<br>System Mode: Testing";
 
-// ===== SAMPLE REMINDERS WITH DUE DATES =====
+// ===== SAMPLE REMINDERS =====
 const reminders = [
-    {text:"Math homework", due:"2026-02-18"},
-    {text:"Project report", due:"2026-02-19"},
-    {text:"Meeting with team", due:"2026-02-17"},
-    {text:"Study for quiz", due:"2026-02-20"}
+{text:"Math homework", due:"2026-02-18"},
+{text:"Project report", due:"2026-02-19"},
+{text:"Meeting with team", due:"2026-02-17"},
+{text:"Study for quiz", due:"2026-02-20"}
 ];
-
 const reminderList = document.getElementById("reminderList");
 reminders.forEach(rem=>{
     let div = document.createElement("div");
@@ -186,6 +236,12 @@ reminders.forEach(rem=>{
     div.innerHTML = `<strong>${rem.text}</strong> - Due: ${rem.due}`;
     reminderList.appendChild(div);
 });
+
+// ===== SHOW BADGES =====
+function showBadges(){
+    document.getElementById("home").style.display="none";
+    document.getElementById("badges").style.display="block";
+}
 </script>
 
 </body>
