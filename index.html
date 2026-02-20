@@ -2,15 +2,17 @@
 <html>
 <head>
 <title>MavNet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+
 body{
-    font-family: Arial, sans-serif;
+    font-family:Arial, sans-serif;
     background:#0b1020;
     color:white;
     text-align:center;
     padding:25px;
 }
-/* Boxes */
+
 .box{
     background:#1b2340;
     border-radius:18px;
@@ -18,115 +20,75 @@ body{
     margin:15px auto;
     max-width:750px;
 }
+
 .gold{background:#bfa100;}
 .purple{background:#6b3fd4;}
 .none{background:#555;}
-.small{font-size:14px;color:#bbb;}
 
-/* System Banner */
-#system-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-#banner-alert {
-    background-color: #ffcc00;
-    color: #000;
-    font-weight: bold;
-    text-align: center;
-    padding: 8px 0;
-}
-#banner-new {
-    background-color: #1b2340;
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 0.9em;
-}
+.small{font-size:13px;color:#bbb}
 
-/* Navigation */
-#nav {
-    margin-top: 70px; /* push below banner */
-    text-align: center;
+/* Banner */
+#system-banner{position:fixed;top:0;left:0;width:100%;z-index:9999;}
+#banner-alert{background:#ffcc00;color:black;padding:8px;font-weight:bold;}
+#banner-new{background:#1b2340;padding:6px;font-size:0.9em}
+
+/* Nav */
+#nav{margin-top:80px;}
+#nav button{
+    background:#1b2340;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    margin:4px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
 }
-#nav button {
-    background: #1b2340;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 0 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-}
-#nav button:hover {
-    background: #6b3fd4;
-}
+#nav button:hover{background:#6b3fd4}
 
 /* Dropdown */
-#dropdown button {
-    width: 150px;
-    display:block;
-    margin:5px auto;
-}
+#dropdown button{display:block;width:170px;margin:4px auto}
 
 /* Pages */
-.page {
-    display: none; /* hide all pages by default */
-}
-.active-page {
-    display: block; /* show active page */
-}
+.page{display:none}
+.active-page{display:block}
 
-/* Wordle Styles */
-.wordle-grid{display:grid;grid-template-rows:repeat(6,50px);gap:5px;justify-content:center;margin-top:15px;}
-.wordle-row{display:grid;grid-template-columns:repeat(5,50px);gap:5px;}
-.cell{border:2px solid #555;border-radius:5px;line-height:50px;font-weight:bold;font-size:24px;text-transform:uppercase;}
-.correct{background:#6aaa64;color:white;}
-.present{background:#c9b458;color:white;}
-.absent{background:#787c7e;color:white;}
-.keyboard{display:flex;flex-wrap:wrap;width:340px;margin:15px auto;gap:5px;justify-content:center;}
-.key{background:#1b2340;color:white;padding:10px;border-radius:5px;cursor:pointer;font-weight:bold;}
-.key:hover{background:#6b3fd4;}
 </style>
 </head>
 <body>
 
-<!-- System Banner -->
+<!-- Banner -->
 <div id="system-banner">
-  <div id="banner-alert">
-    ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
-  </div>
-  <div id="banner-new">
-    ✨ What's New: Page Preferences tab added for custom colors! ✨
-  </div>
+<div id="banner-alert">⚠️ System updates in progress</div>
+<div id="banner-new">✨ Weather + Forecast Added!</div>
 </div>
 
-<!-- Navigation -->
+<!-- NAV -->
 <div id="nav">
-  <div style="display:inline-block; position:relative;">
-    <button onclick="toggleDropdown()">More Settings ▼</button>
-    <div id="dropdown" style="display:none; position:absolute; background:#1b2340; border-radius:10px; padding:5px; top:35px; left:0; z-index:999;">
-      <button onclick="showPage('stats')">Stats</button>
-      <button onclick="showPage('prefs')">Page Preferences</button>
-      <button onclick="showPage('updates')">Updates</button>
-      <button onclick="showPage('suggestions')">Suggestions</button>
-      <button onclick="showPage('help')">Help</button>
-      <button onclick="showPage('wordle')">Wordle (Still In Development)</button>
-    </div>
-  </div>
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('notifications')">Notifications</button>
-  <button onclick="showPage('todos')">Reminders / To-Dos</button>
+
+<div style="display:inline-block;position:relative;">
+<button onclick="toggleDropdown()">More Settings ▼</button>
+
+<div id="dropdown" style="display:none;position:absolute;background:#1b2340;border-radius:10px;padding:6px;">
+<button onclick="showPage('stats')">Stats</button>
+<button onclick="showPage('prefs')">Preferences</button>
+<button onclick="showPage('updates')">Updates</button>
+<button onclick="showPage('suggestions')">Suggestions</button>
+<button onclick="showPage('help')">Help</button>
+<button onclick="showPage('wordle')">Wordle</button>
+<button onclick="showPage('forecast')">Weather Forecast</button>
+</div>
 </div>
 
-<!-- Home Page -->
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('notifications')">Notifications</button>
+<button onclick="showPage('todos')">Reminders</button>
+
+</div>
+
+<!-- HOME -->
 <div id="home" class="page active-page">
+
 <h1 id="greeting"></h1>
 
 <div class="box" id="dateBox">
@@ -135,234 +97,239 @@ body{
 </div>
 
 <div class="box">
-<h3>🎓 Daily Fact</h3>
-<p id="factText"></p>
+<h3>🌤️ Local Weather</h3>
+<p id="weatherText">Loading weather...</p>
+<p id="delayWarning" style="color:#ffcc00"></p>
 </div>
 
 <div class="box">
-<h3>⏰ Upcoming Reminders</h3>
-<ul id="homeTodoList"></ul>
+<h3>📝 Upcoming Reminders</h3>
+<ul id="homeTodos"></ul>
 </div>
 
+</div>
+
+<!-- FORECAST -->
+<div id="forecast" class="page">
 <div class="box">
-<h3>🧭 System Status</h3>
-<p id="statusText"></p>
+<h2>📅 7-Day Forecast</h2>
+<div id="forecastGrid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;"></div>
 </div>
-</div> <!-- end home -->
+</div>
 
-<!-- Notifications Page -->
+<!-- NOTIFICATIONS -->
 <div id="notifications" class="page">
-  <div class="box">
-    <h2>📢 Recent Notifications</h2>
-    <ul id="notificationList">
-      <li>⚠️ Scheduled system maintenance today at 3 PM.</li>
-      <li>📌 New daily facts added to the archive.</li>
-      <li>💡 Tip: Refresh page to get the latest color day info.</li>
-      <li>🛠️ Minor bug fixes applied last night.</li>
-      <li>🔔 New feature: Page Preferences tab for custom colors!</li>
-    </ul>
-  </div>
+<div class="box">
+<h2>📢 Notifications</h2>
+<ul>
+<li>Maintenance tonight at 3 PM</li>
+<li>New weather system added</li>
+<li>Preferences tab added</li>
+</ul>
+</div>
 </div>
 
-<!-- Page Preferences -->
-<div id="prefs" class="page">
-  <div class="box">
-    <h2>⚙️ Page Preferences</h2>
-    <label for="bgColor">Background color:</label>
-    <input type="color" id="bgColor" name="bgColor" value="#0b1020">
-    <br><br>
-    <label for="textColor">Text color:</label>
-    <input type="color" id="textColor" name="textColor" value="#ffffff">
-    <br><br>
-    <button onclick="applyPrefs()">Apply</button>
-  </div>
-</div>
-
-<!-- Stats Page -->
-<div id="stats" class="page">
-  <div class="box">
-    <h2>📊 MavNet Stats</h2>
-    <p>Total Reminders: <span id="statTotalTodos"></span></p>
-    <p>Upcoming Reminders: <span id="statUpcomingTodos"></span></p>
-    <p>Overdue Reminders: <span id="statOverdueTodos"></span></p>
-    <p>Gold Days So Far: <span id="statGoldDays"></span></p>
-    <p>Purple Days So Far: <span id="statPurpleDays"></span></p>
-  </div>
-</div>
-
-<!-- Updates Page -->
-<div id="updates" class="page">
-  <div class="box" style="max-height:400px; overflow-y:auto;">
-    <h2>📜 All Updates</h2>
-    <ul id="allUpdates"></ul>
-  </div>
-</div>
-
-<!-- Suggestions Page -->
-<div id="suggestions" class="page">
-  <div class="box">
-    <h2>💡 Submit a Suggestion</h2>
-    <input type="text" id="suggestName" placeholder="Your name" style="width:60%;padding:5px;"><br><br>
-    <textarea id="suggestText" placeholder="Your suggestion" style="width:60%;height:100px;padding:5px;"></textarea><br><br>
-    <button onclick="sendSuggestion()">Submit</button>
-    <p id="suggestFeedback" style="margin-top:10px;color:#ffcc00;"></p>
-  </div>
-</div>
-
-<!-- To-Do / Reminders Page -->
+<!-- TODOS -->
 <div id="todos" class="page">
-  <div class="box">
-    <h2>📝 Reminders / To-Dos</h2>
-    <input type="text" id="todoInput" placeholder="Enter a reminder" style="width:50%;padding:5px;">
-    <input type="date" id="todoDue" style="padding:5px;">
-    <button onclick="addTodo()">Add</button>
-    <ul id="todoList"></ul>
-    <button onclick="clearTodos()" style="margin-top:10px;">Clear All</button>
-  </div>
+<div class="box">
+<h2>📝 Reminders</h2>
+<input id="todoInput" placeholder="Reminder">
+<input type="date" id="todoDue">
+<button onclick="addTodo()">Add</button>
+<ul id="todoList"></ul>
+<button onclick="clearTodos()">Clear</button>
+</div>
 </div>
 
-<!-- Wordle Page -->
-<div id="wordle" class="page">
-  <div class="box wordle-container">
-    <h2>🎯 MavNet Wordle</h2>
-    <div id="wordle-grid" class="wordle-grid"></div>
-    <div id="keyboard" class="keyboard"></div>
-    <p id="wordle-feedback" style="margin-top:10px;color:#ffcc00;"></p>
-  </div>
+<!-- STATS -->
+<div id="stats" class="page">
+<div class="box">
+<h2>📊 Stats</h2>
+<p>Total Reminders: <span id="statTotal"></span></p>
+<p>Upcoming: <span id="statUpcoming"></span></p>
+<p>Overdue: <span id="statOverdue"></span></p>
+</div>
 </div>
 
-<!-- Help Page -->
+<!-- PREFS -->
+<div id="prefs" class="page">
+<div class="box">
+<h2>🎨 Preferences</h2>
+<input type="color" id="bgColor">
+<input type="color" id="textColor">
+<button onclick="applyPrefs()">Apply</button>
+</div>
+</div>
+
+<!-- UPDATES -->
+<div id="updates" class="page">
+<div class="box">
+<h2>📜 Updates</h2>
+<ul id="updateList"></ul>
+</div>
+</div>
+
+<!-- SUGGESTIONS -->
+<div id="suggestions" class="page">
+<div class="box">
+<h2>💡 Suggestion</h2>
+<textarea id="suggestText" style="width:80%;height:80px"></textarea><br>
+<button onclick="submitSuggestion()">Submit</button>
+<p id="suggestMsg"></p>
+</div>
+</div>
+
+<!-- HELP -->
 <div id="help" class="page">
-  <div class="box" style="max-width:800px; text-align:left;">
-    <h2>❓ MavNet Help & How-To</h2>
-    <ol>
-      <li><strong>Home Page:</strong> Shows greeting, daily message, daily fact, and upcoming reminders.</li>
-      <li><strong>Notifications:</strong> Lists latest system notifications and tips.</li>
-      <li><strong>Reminders / To-Dos:</strong> Add reminders using the text box and optional due date.</li>
-      <li><strong>Page Preferences:</strong> Customize background and text colors using the color pickers.</li>
-      <li><strong>Stats:</strong> View total reminders, upcoming and overdue reminders, plus Gold and Purple day counts.</li>
-      <li><strong>Updates:</strong> Scrollable list of all past updates.</li>
-      <li><strong>Suggestions:</strong> Submit ideas via email.</li>
-      <li><strong>Wordle:</strong> Play a new Wordle daily! (Still In Development)</li>
-    </ol>
-    <p>Contact <a href="mailto:your-email@example.com" style="color:#ffcc00;">MavNet Support</a>.</p>
-  </div>
+<div class="box" style="text-align:left">
+<h2>❓ Help</h2>
+<ul>
+<li>Home shows greeting + weather + reminders</li>
+<li>Forecast shows weekly weather</li>
+<li>Reminders save automatically</li>
+<li>Preferences change colors</li>
+</ul>
+</div>
 </div>
 
-<p class="small">© 2026 MavNet Industries LLC</p>
+<!-- WORDLE -->
+<div id="wordle" class="page">
+<div class="box">
+<h2>🎯 Wordle (Basic)</h2>
+<p>Coming soon 🙂</p>
+</div>
+</div>
+
+<p class="small">© 2026 MavNet</p>
 
 <script>
-// ===== DATE & GREETING =====
-let now = new Date();
-let hour = now.getHours();
-let greeting = hour<12?"Good morning":hour<18?"Good afternoon":"Good evening";
-document.getElementById("greeting").innerText = greeting;
 
-let year = now.getFullYear();
-let month = String(now.getMonth()+1).padStart(2,'0');
-let day = String(now.getDate()).padStart(2,'0');
-let today = `${year}-${month}-${day}`;
-let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
-document.getElementById("dateText").innerHTML = "Today is " + pretty;
+/* NAV */
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active-page'));
+document.getElementById(id).classList.add('active-page');
+document.getElementById('dropdown').style.display='none';
+}
+function toggleDropdown(){
+let d=document.getElementById('dropdown');
+d.style.display=d.style.display==='none'?'block':'none';
+}
 
-// ===== COLOR DAY =====
-const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold"};
-let colorDay = calendar[today] || "None";
-if(colorDay==="Gold"){document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
-else if(colorDay==="Purple"){document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
-else{document.getElementById("colorText").innerHTML="No Color Day";document.getElementById("dateBox").className="box none";}
+/* DATE + GREETING */
+let now=new Date();
+let greet=now.getHours()<12?"Good morning":now.getHours()<18?"Good afternoon":"Good evening";
+document.getElementById("greeting").innerText=greet;
 
-// ===== DAILY FACT =====
-const facts = ["Learning systems at universities log assignment times.","Ultra-short-throw projectors make huge images close up.","Interactive projectors track pen position.","GitHub Pages can host full websites for free.","LED destination signs refresh fast so letters look solid.","London Underground has very old stations.","Some colleges auto-lock assignments at deadlines.","Projectors lose brightness as lamps age.","Color-day rotations prevent always-hardest schedules.","Many subway maps are diagrammatic.","Touch projectors need recalibration if moved.","University attendance systems sync with ID scans.","Short-throw projectors reduce shadows.","Learning management systems detect late uploads.","Most classroom projectors run quieter in Eco mode.","Some subway stations built before elevators.","Digital pens don’t use ink.","Projector focus should be adjusted after warm-up.","Universities expect daily email checks.","LED matrices use multiplexing for many lights.","Some projectors store calibration data internally.","College lecture recordings auto-upload.","Subway trains use destination signs.","Projector filters need cleaning.","Assignment timestamps stay in server logs.","Some subway systems have ghost platforms.","Interactive boards detect multiple pens.","GitHub tracks all file changes.","Universities rarely accept 'I didn’t see it online'.","Short-throw lenses differ from standard lenses.","Some subway stations have curved platforms.","Projector keystone correction reduces sharpness.","Learning systems show professors quiz durations.","Many colleges back up assignments.","LED boards readable in sunlight.","Most classroom projectors mounted off-center.","Subway maps often use 45° angles.","Online assignments auto-save drafts.","Projector bulbs dim faster if turned on/off repeatedly.","Some subway systems run maintenance trains overnight.","Interactive pens use infrared or ultrasonic signals.","Universities keep grade change records.","Projector screens reflect differently.","Some subway stations renamed.","MavNet reminders beat memory.","Skye recalibrated a projector faster than expected.","Everleigh thinks engine noise improves focus.","Consistency builds trust. Alarms build consistency."];
-function getDailyFact(){let seed=today.replace(/-/g,"");let index=parseInt(seed)%facts.length;return facts[index];}
-document.getElementById("factText").innerHTML = getDailyFact();
+document.getElementById("dateText").innerText=
+"Today is "+now.toLocaleDateString("en-US",{weekday:'long',month:'long',day:'numeric',year:'numeric'});
 
-// ===== STATUS =====
-document.getElementById("statusText").innerHTML = "Detected date: " + today + "<br>Color Day: " + colorDay + "<br>Delivery: Verified<br>System Mode: Testing";
+/* COLOR DAY */
+const calendar={"2026-02-19":"Purple","2026-02-20":"Gold"};
+let today=now.toISOString().split('T')[0];
+document.getElementById("colorText").innerText="Today is "+(calendar[today]||"No")+" Day";
 
-// ===== NAVIGATION =====
-function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active-page'));document.getElementById(pageId).classList.add('active-page');document.getElementById('dropdown').style.display='none';}
-function toggleDropdown(){const d=document.getElementById('dropdown');d.style.display=d.style.display==='none'?'block':'none';}
-
-// ===== PAGE PREFERENCES =====
-function applyPrefs(){document.body.style.background=document.getElementById('bgColor').value;document.body.style.color=document.getElementById('textColor').value;}
-
-// ===== ROTATING BANNER =====
-const updates = ["Page Preferences tab added for custom colors!","New daily facts added to the archive.","Scheduled maintenance today at 3 PM.","Minor bug fixes applied last night."];
-let currentUpdate = 0;
-function rotateBanner(){document.getElementById("banner-new").innerText="✨ What's New: "+updates[currentUpdate]+" ✨";currentUpdate=(currentUpdate+1)%updates.length;}
-setInterval(rotateBanner,5000);rotateBanner();
-
-// ===== ALL UPDATES LIST =====
-function populateUpdates(){const ul=document.getElementById('allUpdates');ul.innerHTML="";updates.forEach(u=>{const li=document.createElement('li');li.textContent=u;ul.appendChild(li);});}
-populateUpdates();
-
-// ===== TO-DOS / REMINDERS =====
+/* TODOS */
 function loadTodos(){
-    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
-    const ul=document.getElementById('todoList');ul.innerHTML="";
-    todos.forEach((item,index)=>{
-        const li=document.createElement('li');
-        li.textContent=item.due?`${item.text} (Due: ${item.due})`:item.text;
-        li.onclick=()=>{todos.splice(index,1);localStorage.setItem('mavnetTodos',JSON.stringify(todos));loadTodos();updateStats();};
-        ul.appendChild(li);
-    });
-    const homeUl=document.getElementById('homeTodoList');homeUl.innerHTML="";
-    const todayDate=new Date().toISOString().split('T')[0];
-    const upcoming=todos.filter(t=>t.due&&t.due>=todayDate).sort((a,b)=>a.due.localeCompare(b.due));
-    upcoming.forEach(item=>{const li=document.createElement('li');li.textContent=`${item.text} (Due: ${item.due})`;homeUl.appendChild(li);});
-    if(upcoming.length===0){homeUl.innerHTML="<li>No upcoming reminders.</li>";}
-    updateStats();
-}
-function addTodo(){const textInput=document.getElementById('todoInput').value.trim();const dueInput=document.getElementById('todoDue').value;if(!textInput)return;const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];todos.push({text:textInput,due:dueInput});localStorage.setItem('mavnetTodos',JSON.stringify(todos));document.getElementById('todoInput').value="";document.getElementById('todoDue').value="";loadTodos();}
-function clearTodos(){localStorage.removeItem('mavnetTodos');loadTodos();}
+let t=JSON.parse(localStorage.getItem("mavTodos"))||[];
+let home=document.getElementById("homeTodos");
+let full=document.getElementById("todoList");
+home.innerHTML="";full.innerHTML="";
+let today=new Date().toISOString().split('T')[0];
 
-// ===== STATS =====
-function updateStats(){
-    const todos=JSON.parse(localStorage.getItem('mavnetTodos'))||[];
-    const todayDate=new Date().toISOString().split('T')[0];
-    document.getElementById('statTotalTodos').innerText=todos.length;
-    document.getElementById('statUpcomingTodos').innerText=todos.filter(t=>t.due&&t.due>=todayDate).length;
-    document.getElementById('statOverdueTodos').innerText=todos.filter(t=>t.due&&t.due<todayDate).length;
-    const colorCounts={Gold:0,Purple:0};
-    Object.values(calendar).forEach(c=>{if(c==='Gold')colorCounts.Gold++;if(c==='Purple')colorCounts.Purple++;});
-    document.getElementById('statGoldDays').innerText=colorCounts.Gold;
-    document.getElementById('statPurpleDays').innerText=colorCounts.Purple;
+t.forEach((x,i)=>{
+let li=document.createElement("li");
+li.textContent=x.text+(x.due?" (Due "+x.due+")":"");
+li.onclick=()=>{t.splice(i,1);localStorage.setItem("mavTodos",JSON.stringify(t));loadTodos();}
+full.appendChild(li.cloneNode(true));
+if(x.due>=today)home.appendChild(li);
+});
+updateStats();
 }
+function addTodo(){
+let t=JSON.parse(localStorage.getItem("mavTodos"))||[];
+t.push({text:todoInput.value,due:todoDue.value});
+localStorage.setItem("mavTodos",JSON.stringify(t));
+todoInput.value="";todoDue.value="";
+loadTodos();
+}
+function clearTodos(){localStorage.removeItem("mavTodos");loadTodos();}
 loadTodos();
 
-// ===== SUGGESTIONS =====
-function sendSuggestion(){const name=document.getElementById('suggestName').value.trim();const text=document.getElementById('suggestText').value.trim();if(!text){document.getElementById('suggestFeedback').innerText="Enter a suggestion first!";return;}document.getElementById('suggestFeedback').innerText="Thank you for your suggestion!";document.getElementById('suggestName').value="";document.getElementById('suggestText').value="";}
+/* STATS */
+function updateStats(){
+let t=JSON.parse(localStorage.getItem("mavTodos"))||[];
+let today=new Date().toISOString().split('T')[0];
+statTotal.innerText=t.length;
+statUpcoming.innerText=t.filter(x=>x.due>=today).length;
+statOverdue.innerText=t.filter(x=>x.due<today).length;
+}
 
-// ===== WORDLE =====
-const WORD_LIST = ["APPLE","PLANE","RIVER","GLASS","TRAIN","SOUND","LIGHT","BRAIN"];
-function getDailyWord(){ // simple deterministic daily word
-    const seed=today.replace(/-/g,"");
-    const index=parseInt(seed)%WORD_LIST.length;
-    return WORD_LIST[index];
+/* PREFS */
+function applyPrefs(){
+document.body.style.background=bgColor.value;
+document.body.style.color=textColor.value;
 }
-let targetWord=getDailyWord();
-let currentRow=0,currentCol=0;
-let guesses=Array.from({length:6},()=>Array(5).fill(""));
-const grid=document.getElementById("wordle-grid");
-const keyboard=document.getElementById("keyboard");
-function setupWordle(){
-    grid.innerHTML="";keyboard.innerHTML="";
-    for(let r=0;r<6;r++){
-        const row=document.createElement("div");row.className="wordle-row";
-        for(let c=0;c<5;c++){const cell=document.createElement("div");cell.className="cell";row.appendChild(cell);}
-        grid.appendChild(row);
-    }
-    const letters="QWERTYUIOPASDFGHJKLZXCVBNM";
-    letters.split("").forEach(l=>{const k=document.createElement("div");k.className="key";k.textContent=l;k.onclick=()=>pressKey(l);keyboard.appendChild(k);});
+
+/* UPDATES */
+let updates=["Weather added","Forecast added","Prefs added"];
+updateList.innerHTML=updates.map(x=>"<li>"+x+"</li>").join("");
+
+/* SUGGEST */
+function submitSuggestion(){
+suggestMsg.innerText="Thanks for the suggestion!";
+suggestText.value="";
 }
-function pressKey(l){if(currentCol<5){guesses[currentRow][currentCol]=l;updateGrid();currentCol++;}}
-function updateGrid(){const rows=grid.children;for(let r=0;r<6;r++){for(let c=0;c<5;c++){rows[r].children[c].textContent=guesses[r][c]||"";rows[r].children[c].className="cell";}}}
-document.addEventListener("keydown",e=>{if(e.key==="Backspace"&&currentCol>0){currentCol--;guesses[currentRow][currentCol]="";updateGrid();}else if(e.key==="Enter"&&currentCol===5){checkWord();}else if(/^[a-zA-Z]$/.test(e.key)&&currentCol<5){pressKey(e.key.toUpperCase());}});
-function checkWord(){const guess=guesses[currentRow].join("");if(guess.length!==5)return;const row=grid.children[currentRow];for(let i=0;i<5;i++){if(guess[i]===targetWord[i])row.children[i].classList.add("correct");else if(targetWord.includes(guess[i]))row.children[i].classList.add("present");else row.children[i].classList.add("absent");}if(guess===targetWord){document.getElementById("wordle-feedback").innerText="🎉 Correct!";return;}currentRow++;currentCol=0;if(currentRow>=6){document.getElementById("wordle-feedback").innerText=`❌ Out of guesses! Word was: ${targetWord}`;}}
-setupWordle();
+
+/* WEATHER */
+const WEATHER_API_KEY="YOUR_API_KEY";
+
+function getLocation(){
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(
+p=>loadWeather(p.coords.latitude,p.coords.longitude),
+()=>loadWeather(38.8462,-77.3064)
+);
+}else loadWeather(38.8462,-77.3064);
+}
+
+async function loadWeather(lat,lon){
+try{
+let res=await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`);
+let d=await res.json();
+
+let temp=Math.round(d.current.temp);
+let desc=d.current.weather[0].description;
+let icon=d.current.weather[0].icon;
+weatherText.innerHTML=`<img src="https://openweathermap.org/img/wn/${icon}.png"> ${temp}°F ${desc}`;
+
+greeting.innerText+=` — ${temp}°F and ${desc}`;
+
+if(temp<28||d.current.weather[0].main==="Snow"){
+delayWarning.innerText="⚠️ Possible school delays due to weather";
+}
+
+buildForecast(d.daily);
+
+}catch{
+weatherText.innerText="Weather unavailable";
+}
+}
+
+function buildForecast(days){
+let g=document.getElementById("forecastGrid");
+g.innerHTML="";
+days.slice(0,7).forEach(x=>{
+let day=new Date(x.dt*1000).toLocaleDateString("en-US",{weekday:"short"});
+g.innerHTML+=`<div class="box" style="max-width:120px">
+<b>${day}</b><br>
+<img src="https://openweathermap.org/img/wn/${x.weather[0].icon}.png"><br>
+${Math.round(x.temp.max)}°/${Math.round(x.temp.min)}°
+</div>`;
+});
+}
+
+getLocation();
 
 </script>
-
 </body>
 </html>
