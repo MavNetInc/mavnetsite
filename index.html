@@ -236,6 +236,7 @@ body{
     <p id="wordle-feedback" style="margin-top:10px;color:#ffcc00;"></p>
   </div>
 </div>
+    
 
 <!-- Help Page -->
 <div id="help" class="page">
@@ -252,6 +253,14 @@ body{
       <li><strong>Wordle:</strong> Play a new Wordle daily!</li>
     </ol>
     <p>Contact <a href="mailto:your-email@example.com" style="color:#ffcc00;">MavNet Support</a>.</p>
+  </div>
+</div>
+
+<!-- Weather======-->
+<div id="weather" class="page">
+  <div class="box">
+    <h2>🌤️ 5-Day Forecast</h2>
+    <div id="forecastBox">Loading forecast...</div>
   </div>
 </div>
 
@@ -342,13 +351,7 @@ loadTodos();
 function sendSuggestion(){const name=document.getElementById('suggestName').value.trim();const text=document.getElementById('suggestText').value.trim();if(!text){document.getElementById('suggestFeedback').innerText="Enter a suggestion first!";return;}document.getElementById('suggestFeedback').innerText="Thank you for your suggestion!";document.getElementById('suggestName').value="";document.getElementById('suggestText').value="";}
 
 
-// =====Weather======
-<div id="weather" class="page">
-  <div class="box">
-    <h2>🌤️ 5-Day Forecast</h2>
-    <div id="forecastBox">Loading forecast...</div>
-  </div>
-</div>
+
 // ===== WORDLE =====
 const WORD_LIST = ["APPLE","PLANE","RIVER","GLASS","TRAIN","SOUND","LIGHT","BRAIN"];
 function getDailyWord(){ // simple deterministic daily word
@@ -443,4 +446,5 @@ loadForecast();
 
 </body>
 </html>
+
 
