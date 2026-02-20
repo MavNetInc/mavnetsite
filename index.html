@@ -362,13 +362,11 @@ document.addEventListener("keydown",e=>{if(e.key==="Backspace"&&currentCol>0){cu
 function checkWord(){const guess=guesses[currentRow].join("");if(guess.length!==5)return;const row=grid.children[currentRow];for(let i=0;i<5;i++){if(guess[i]===targetWord[i])row.children[i].classList.add("correct");else if(targetWord.includes(guess[i]))row.children[i].classList.add("present");else row.children[i].classList.add("absent");}if(guess===targetWord){document.getElementById("wordle-feedback").innerText="🎉 Correct!";return;}currentRow++;currentCol=0;if(currentRow>=6){document.getElementById("wordle-feedback").innerText=`❌ Out of guesses! Word was: ${targetWord}`;}}
 setupWordle();
 
-<script src="weather.js"></script>
-<script>
-loadWeather();
-</script>
+
     
 </script>
 
 </body>
 </html>
+
 
