@@ -117,13 +117,12 @@ body{
       <button onclick="showPage('updates')">Updates</button>
       <button onclick="showPage('suggestions')">Suggestions</button>
       <button onclick="showPage('help')">Help</button>
-      <button onclick="showPage('wordle')">Wordle</button>
+      <button onclick="showPage('wordle')">Wordle (Still In Development)</button>
     </div>
   </div>
   <button onclick="showPage('home')">Home</button>
   <button onclick="showPage('notifications')">Notifications</button>
   <button onclick="showPage('todos')">Reminders / To-Dos</button>
-  <button onclick="showPage('weather')">5-Day Forecast</button>
 </div>
 
 <!-- Home Page -->
@@ -139,13 +138,8 @@ body{
 <h3>🎓 Daily Fact</h3>
 <p id="factText"></p>
 </div>
-    
+
 <div class="box">
-<h3>🌤️ Weather Forecast</h3>
-<p id="weatherText">Loading weather...</p>
-</div>
-<div class="box">
-    
 <h3>⏰ Upcoming Reminders</h3>
 <ul id="homeTodoList"></ul>
 </div>
@@ -236,7 +230,6 @@ body{
     <p id="wordle-feedback" style="margin-top:10px;color:#ffcc00;"></p>
   </div>
 </div>
-    
 
 <!-- Help Page -->
 <div id="help" class="page">
@@ -250,19 +243,11 @@ body{
       <li><strong>Stats:</strong> View total reminders, upcoming and overdue reminders, plus Gold and Purple day counts.</li>
       <li><strong>Updates:</strong> Scrollable list of all past updates.</li>
       <li><strong>Suggestions:</strong> Submit ideas via email.</li>
-      <li><strong>Wordle:</strong> Play a new Wordle daily!</li>
+      <li><strong>Wordle:</strong> Play a new Wordle daily! (Still In Development)</li>
     </ol>
     <p>Contact <a href="mailto:your-email@example.com" style="color:#ffcc00;">MavNet Support</a>.</p>
   </div>
 </div>
-
-<!-- Weather======
-<div id="weather" class="page">
-  <div class="box">
-    <h2>🌤️ 5-Day Forecast</h2>
-    <div id="forecastBox">Loading forecast...</div>
-  </div>
-</div> -->
 
 <p class="small">© 2026 MavNet Industries LLC</p>
 
@@ -291,7 +276,6 @@ else{document.getElementById("colorText").innerHTML="No Color Day";document.getE
 const facts = ["Learning systems at universities log assignment times.","Ultra-short-throw projectors make huge images close up.","Interactive projectors track pen position.","GitHub Pages can host full websites for free.","LED destination signs refresh fast so letters look solid.","London Underground has very old stations.","Some colleges auto-lock assignments at deadlines.","Projectors lose brightness as lamps age.","Color-day rotations prevent always-hardest schedules.","Many subway maps are diagrammatic.","Touch projectors need recalibration if moved.","University attendance systems sync with ID scans.","Short-throw projectors reduce shadows.","Learning management systems detect late uploads.","Most classroom projectors run quieter in Eco mode.","Some subway stations built before elevators.","Digital pens don’t use ink.","Projector focus should be adjusted after warm-up.","Universities expect daily email checks.","LED matrices use multiplexing for many lights.","Some projectors store calibration data internally.","College lecture recordings auto-upload.","Subway trains use destination signs.","Projector filters need cleaning.","Assignment timestamps stay in server logs.","Some subway systems have ghost platforms.","Interactive boards detect multiple pens.","GitHub tracks all file changes.","Universities rarely accept 'I didn’t see it online'.","Short-throw lenses differ from standard lenses.","Some subway stations have curved platforms.","Projector keystone correction reduces sharpness.","Learning systems show professors quiz durations.","Many colleges back up assignments.","LED boards readable in sunlight.","Most classroom projectors mounted off-center.","Subway maps often use 45° angles.","Online assignments auto-save drafts.","Projector bulbs dim faster if turned on/off repeatedly.","Some subway systems run maintenance trains overnight.","Interactive pens use infrared or ultrasonic signals.","Universities keep grade change records.","Projector screens reflect differently.","Some subway stations renamed.","MavNet reminders beat memory.","Skye recalibrated a projector faster than expected.","Everleigh thinks engine noise improves focus.","Consistency builds trust. Alarms build consistency."];
 function getDailyFact(){let seed=today.replace(/-/g,"");let index=parseInt(seed)%facts.length;return facts[index];}
 document.getElementById("factText").innerHTML = getDailyFact();
-
 
 // ===== STATUS =====
 document.getElementById("statusText").innerHTML = "Detected date: " + today + "<br>Color Day: " + colorDay + "<br>Delivery: Verified<br>System Mode: Testing";
@@ -350,8 +334,6 @@ loadTodos();
 // ===== SUGGESTIONS =====
 function sendSuggestion(){const name=document.getElementById('suggestName').value.trim();const text=document.getElementById('suggestText').value.trim();if(!text){document.getElementById('suggestFeedback').innerText="Enter a suggestion first!";return;}document.getElementById('suggestFeedback').innerText="Thank you for your suggestion!";document.getElementById('suggestName').value="";document.getElementById('suggestText').value="";}
 
-
-
 // ===== WORDLE =====
 const WORD_LIST = ["APPLE","PLANE","RIVER","GLASS","TRAIN","SOUND","LIGHT","BRAIN"];
 function getDailyWord(){ // simple deterministic daily word
@@ -380,72 +362,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Backspace"&&currentCol>0){cu
 function checkWord(){const guess=guesses[currentRow].join("");if(guess.length!==5)return;const row=grid.children[currentRow];for(let i=0;i<5;i++){if(guess[i]===targetWord[i])row.children[i].classList.add("correct");else if(targetWord.includes(guess[i]))row.children[i].classList.add("present");else row.children[i].classList.add("absent");}if(guess===targetWord){document.getElementById("wordle-feedback").innerText="🎉 Correct!";return;}currentRow++;currentCol=0;if(currentRow>=6){document.getElementById("wordle-feedback").innerText=`❌ Out of guesses! Word was: ${targetWord}`;}}
 setupWordle();
 
-    // ===== WEATHER =====
-const apiKey = "1c35aa3e78baa8407e90a9af1e1597a9";   // Get free key from OpenWeatherMap
-
-// Fairfax VA coordinates
-const lat = 38.8462;
-const lon = -77.3064;
-
-fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
-.then(res => res.json())
-.then(data => {
-    let temp = Math.round(data.main.temp);
-    let desc = data.weather[0].description;
-    let city = data.name;
-
-    document.getElementById("weatherText").innerHTML =
-        `📍 ${city}<br>🌡️ ${temp}°F<br>☁️ ${desc}`;
-})
-.catch(() => {
-    document.getElementById("weatherText").innerText =
-        "Weather unavailable right now.";
-});
-
-
-    // ===== 5 DAY FORECAST =====
-const apiKey = "1c35aa3e78baa8407e90a9af1e1597a9";
-
-// Fairfax VA
-const lat = 38.8462;
-const lon = -77.3064;
-
-function loadForecast(){
-fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
-.then(res => res.json())
-.then(data => {
-
-    let days = {};
-    data.list.forEach(item=>{
-        let date = item.dt_txt.split(" ")[0];
-        if(!days[date]){
-            days[date] = item;
-        }
-    });
-
-    let html = "";
-    Object.values(days).slice(0,5).forEach(day=>{
-        let d = new Date(day.dt_txt);
-        let pretty = d.toLocaleDateString("en-US",{weekday:'short',month:'short',day:'numeric'});
-        let temp = Math.round(day.main.temp);
-        let desc = day.weather[0].description;
-
-        html += `<p><b>${pretty}</b> — ${temp}°F — ${desc}</p>`;
-    });
-
-    document.getElementById("forecastBox").innerHTML = html;
-})
-.catch(()=>{
-    document.getElementById("forecastBox").innerText =
-    "Forecast unavailable right now.";
-});
-}
-
-loadForecast();
 </script>
 
 </body>
 </html>
-
-
-
