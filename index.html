@@ -123,6 +123,7 @@ body{
   <button onclick="showPage('home')">Home</button>
   <button onclick="showPage('notifications')">Notifications</button>
   <button onclick="showPage('todos')">Reminders / To-Dos</button>
+  <button onclick="showPage('weather')">5-Day Forecast</button>
 </div>
 
 <!-- Home Page -->
@@ -340,6 +341,14 @@ loadTodos();
 // ===== SUGGESTIONS =====
 function sendSuggestion(){const name=document.getElementById('suggestName').value.trim();const text=document.getElementById('suggestText').value.trim();if(!text){document.getElementById('suggestFeedback').innerText="Enter a suggestion first!";return;}document.getElementById('suggestFeedback').innerText="Thank you for your suggestion!";document.getElementById('suggestName').value="";document.getElementById('suggestText').value="";}
 
+
+// =====Weather======
+<div id="weather" class="page">
+  <div class="box">
+    <h2>🌤️ 5-Day Forecast</h2>
+    <div id="forecastBox">Loading forecast...</div>
+  </div>
+</div>
 // ===== WORDLE =====
 const WORD_LIST = ["APPLE","PLANE","RIVER","GLASS","TRAIN","SOUND","LIGHT","BRAIN"];
 function getDailyWord(){ // simple deterministic daily word
@@ -389,7 +398,49 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&uni
     document.getElementById("weatherText").innerText =
         "Weather unavailable right now.";
 });
+
+
+    // ===== 5 DAY FORECAST =====
+const apiKey = "1c35aa3e78baa8407e90a9af1e1597a9";
+
+// Fairfax VA
+const lat = 38.8462;
+const lon = -77.3064;
+
+function loadForecast(){
+fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`)
+.then(res => res.json())
+.then(data => {
+
+    let days = {};
+    data.list.forEach(item=>{
+        let date = item.dt_txt.split(" ")[0];
+        if(!days[date]){
+            days[date] = item;
+        }
+    });
+
+    let html = "";
+    Object.values(days).slice(0,5).forEach(day=>{
+        let d = new Date(day.dt_txt);
+        let pretty = d.toLocaleDateString("en-US",{weekday:'short',month:'short',day:'numeric'});
+        let temp = Math.round(day.main.temp);
+        let desc = day.weather[0].description;
+
+        html += `<p><b>${pretty}</b> — ${temp}°F — ${desc}</p>`;
+    });
+
+    document.getElementById("forecastBox").innerHTML = html;
+})
+.catch(()=>{
+    document.getElementById("forecastBox").innerText =
+    "Forecast unavailable right now.";
+});
+}
+
+loadForecast();
 </script>
 
 </body>
 </html>
+
