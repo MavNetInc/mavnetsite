@@ -265,12 +265,69 @@ let today = `${year}-${month}-${day}`;
 let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
 document.getElementById("dateText").innerHTML = "Today is " + pretty;
 
-// ===== COLOR DAY =====
-const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold"};
-let colorDay = calendar[today] || "None";
-if(colorDay==="Gold"){document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
-else if(colorDay==="Purple"){document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
-else{document.getElementById("colorText").innerHTML="No Color Day";document.getElementById("dateBox").className="box none";}
+<script>
+// ===== HOLIDAYS =====
+const holidays = [
+  "2026-01-01", // New Year's
+  "2026-02-21", // President's Day
+  "2026-12-25"  // Christmas
+];
+
+// ===== CALENDAR =====
+const calendar = {
+  "2026-02-17":"Gold",
+  "2026-02-18":"Gold",
+  "2026-02-19":"Purple",
+  "2026-02-20":"Gold",
+  "2026-02-23":"Purple",
+  "2026-02-24":"Gold"
+};
+
+// ===== TODAY INFO =====
+let now = new Date();
+let year = now.getFullYear();
+let month = String(now.getMonth() + 1).padStart(2, "0");
+let day = String(now.getDate()).padStart(2, "0");
+let today = `${year}-${month}-${day}`;
+
+// Determine greeting
+let hour = now.getHours();
+let greeting = "";
+if(hour < 12) greeting = "Good morning";
+else if(hour < 18) greeting = "Good afternoon";
+else greeting = "Good evening";
+
+// Day of week: 0 = Sunday, 6 = Saturday
+let dayOfWeek = now.getDay();
+
+// Determine color day
+let colorDay = "None";
+if(dayOfWeek !== 0 && dayOfWeek !== 6 && !holidays.includes(today)) {
+    colorDay = calendar[today] || "None";
+}
+
+// ===== UPDATE TOP BLOCK =====
+const dateBox = document.getElementById("dateBox");
+const colorText = document.getElementById("colorText");
+
+// Format full date
+let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+// Update date text with greeting
+document.getElementById("dateText").innerHTML = `${greeting}. Today is ${pretty}`;
+
+// Update color day
+if(colorDay === "Gold") {
+    colorText.innerHTML = "Today is a Gold Day 🟡";
+    dateBox.className = "box gold";
+} else if(colorDay === "Purple") {
+    colorText.innerHTML = "Today is a Purple Day 🟣";
+    dateBox.className = "box purple";
+} else {
+    colorText.innerHTML = "No Color Day";
+    dateBox.className = "box none";
+}
+
 
 // ===== DAILY FACT =====
 const facts = ["Learning systems at universities log assignment times.","Ultra-short-throw projectors make huge images close up.","Interactive projectors track pen position.","GitHub Pages can host full websites for free.","LED destination signs refresh fast so letters look solid.","London Underground has very old stations.","Some colleges auto-lock assignments at deadlines.","Projectors lose brightness as lamps age.","Color-day rotations prevent always-hardest schedules.","Many subway maps are diagrammatic.","Touch projectors need recalibration if moved.","University attendance systems sync with ID scans.","Short-throw projectors reduce shadows.","Learning management systems detect late uploads.","Most classroom projectors run quieter in Eco mode.","Some subway stations built before elevators.","Digital pens don’t use ink.","Projector focus should be adjusted after warm-up.","Universities expect daily email checks.","LED matrices use multiplexing for many lights.","Some projectors store calibration data internally.","College lecture recordings auto-upload.","Subway trains use destination signs.","Projector filters need cleaning.","Assignment timestamps stay in server logs.","Some subway systems have ghost platforms.","Interactive boards detect multiple pens.","GitHub tracks all file changes.","Universities rarely accept 'I didn’t see it online'.","Short-throw lenses differ from standard lenses.","Some subway stations have curved platforms.","Projector keystone correction reduces sharpness.","Learning systems show professors quiz durations.","Many colleges back up assignments.","LED boards readable in sunlight.","Most classroom projectors mounted off-center.","Subway maps often use 45° angles.","Online assignments auto-save drafts.","Projector bulbs dim faster if turned on/off repeatedly.","Some subway systems run maintenance trains overnight.","Interactive pens use infrared or ultrasonic signals.","Universities keep grade change records.","Projector screens reflect differently.","Some subway stations renamed.","MavNet reminders beat memory.","Skye recalibrated a projector faster than expected.","Everleigh thinks engine noise improves focus.","Consistency builds trust. Alarms build consistency."];
@@ -368,5 +425,6 @@ setupWordle();
 
 </body>
 </html>
+
 
 
