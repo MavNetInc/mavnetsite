@@ -132,7 +132,6 @@ body{
 <div class="box" id="dateBox">
 <h2 id="dateText"></h2>
 <h3 id="colorText"></h3>
-<h4 id="tomorrowText" style="margin-top:6px;color:#bbb;"></h4>
 </div>
 
 <div class="box">
@@ -252,10 +251,7 @@ body{
 
 <p class="small">© 2026 MavNet Industries LLC</p>
 
-<script src="events.js"></script>
 <script>
-
-    
 // ===== DATE & GREETING =====
 let now = new Date();
 let hour = now.getHours();
@@ -269,98 +265,13 @@ let today = `${year}-${month}-${day}`;
 let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', month:'long', day:'numeric'});
 document.getElementById("dateText").innerHTML = "Today is " + pretty;
 
-// ===== SPECIAL EVENTS =====
-const specialEvents = {
-  "2026-02-21": { type:"weekend", message:"No School — Weekend" },
-  "2026-02-22": { type:"weekend", message:"No School — Weekend" },
-  "2026-02-23": { type:"holiday", message:"Presidents Day — No School" },
-  "2026-03-05": { type:"delay", message:"2-Hour Delay ⏰" },
-  "2026-03-12": { type:"early", message:"Early Release — 12:30 PM" }
-};
-    
 // ===== COLOR DAY =====
-const calendar = {
-"2026-02-17":"Gold",
-"2026-02-18":"Gold",
-"2026-02-19":"Purple",
-"2026-02-20":"Gold",
-"2026-02-23":"Purple",
-"2026-02-24":"Gold"
-};
-
-let dayOfWeek = new Date(today).getDay(); // 0=Sun 6=Sat
-let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
-
+const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold"};
 let colorDay = calendar[today] || "None";
+if(colorDay==="Gold"){document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
+else if(colorDay==="Purple"){document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
+else{document.getElementById("colorText").innerHTML="No Color Day";document.getElementById("dateBox").className="box none";}
 
-if (specialEvents[today]) {
-
-    document.getElementById("colorText").innerHTML =
-        specialEvents[today].message;
-
-    document.getElementById("dateBox").className = "box none";
-
-}
-else if (isWeekend) {
-
-    document.getElementById("colorText").innerHTML =
-        "No School — Weekend";
-
-    document.getElementById("dateBox").className = "box none";
-
-}
-else if (colorDay === "Gold") {
-
-    document.getElementById("colorText").innerHTML =
-        "Today is a Gold Day 🟡";
-
-    document.getElementById("dateBox").className = "box gold";
-
-}
-else if (colorDay === "Purple") {
-
-    document.getElementById("colorText").innerHTML =
-        "Today is a Purple Day 🟣";
-
-    document.getElementById("dateBox").className = "box purple";
-
-}
-else {
-
-    document.getElementById("colorText").innerHTML =
-        "No Color Day";
-
-    document.getElementById("dateBox").className = "box none";
-}
-
-    // ===== TOMORROW =====
-function getTomorrowString() {
-
-    let tomorrowDate = new Date(today);
-    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-
-    let tomorrowISO = tomorrowDate.toISOString().split('T')[0];
-    let dow = tomorrowDate.getDay();
-    let isWeekend = (dow === 0 || dow === 6);
-
-    // Holiday / delay override
-    if (specialEvents && specialEvents[tomorrowISO]) {
-        return "Tomorrow: " + specialEvents[tomorrowISO].message;
-    }
-
-    if (isWeekend) {
-        return "Tomorrow: No School — Weekend";
-    }
-
-    let nextColor = calendar[tomorrowISO] || "None";
-
-    if (nextColor === "Gold") return "Tomorrow is a Gold Day 🟡";
-    if (nextColor === "Purple") return "Tomorrow is a Purple Day 🟣";
-
-    return "Tomorrow: No Color Day";
-}
-
-document.getElementById("tomorrowText").innerHTML = getTomorrowString();
 // ===== DAILY FACT =====
 const facts = ["Learning systems at universities log assignment times.","Ultra-short-throw projectors make huge images close up.","Interactive projectors track pen position.","GitHub Pages can host full websites for free.","LED destination signs refresh fast so letters look solid.","London Underground has very old stations.","Some colleges auto-lock assignments at deadlines.","Projectors lose brightness as lamps age.","Color-day rotations prevent always-hardest schedules.","Many subway maps are diagrammatic.","Touch projectors need recalibration if moved.","University attendance systems sync with ID scans.","Short-throw projectors reduce shadows.","Learning management systems detect late uploads.","Most classroom projectors run quieter in Eco mode.","Some subway stations built before elevators.","Digital pens don’t use ink.","Projector focus should be adjusted after warm-up.","Universities expect daily email checks.","LED matrices use multiplexing for many lights.","Some projectors store calibration data internally.","College lecture recordings auto-upload.","Subway trains use destination signs.","Projector filters need cleaning.","Assignment timestamps stay in server logs.","Some subway systems have ghost platforms.","Interactive boards detect multiple pens.","GitHub tracks all file changes.","Universities rarely accept 'I didn’t see it online'.","Short-throw lenses differ from standard lenses.","Some subway stations have curved platforms.","Projector keystone correction reduces sharpness.","Learning systems show professors quiz durations.","Many colleges back up assignments.","LED boards readable in sunlight.","Most classroom projectors mounted off-center.","Subway maps often use 45° angles.","Online assignments auto-save drafts.","Projector bulbs dim faster if turned on/off repeatedly.","Some subway systems run maintenance trains overnight.","Interactive pens use infrared or ultrasonic signals.","Universities keep grade change records.","Projector screens reflect differently.","Some subway stations renamed.","MavNet reminders beat memory.","Skye recalibrated a projector faster than expected.","Everleigh thinks engine noise improves focus.","Consistency builds trust. Alarms build consistency."];
 function getDailyFact(){let seed=today.replace(/-/g,"");let index=parseInt(seed)%facts.length;return facts[index];}
@@ -457,6 +368,3 @@ setupWordle();
 
 </body>
 </html>
-
-
-
