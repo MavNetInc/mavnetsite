@@ -118,7 +118,7 @@ body{
 <!-- System Banner -->
 <div id="system-banner">
   <div id="banner-alert">
-    ⚠️ System updates are in progress. Some features may be temporarily unavailable. ⚠️
+    ⚠️ Fairfax County Public Schools delayed by 2 hours on Monday, Feburary 23rd! ⚠️
   </div>
   <div id="banner-new">
     ✨ What's New: Page Preferences tab added for custom colors! ✨
@@ -286,7 +286,7 @@ let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', mon
 document.getElementById("dateText").innerHTML = "Today is " + pretty;
 
 // ===== COLOR DAY =====
-const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold"};
+const calendar = {"2026-02-17":"Gold","2026-02-18":"Gold","2026-02-19":"Purple","2026-02-20":"Gold","2026-02-23":"Purple","2026-02-24":"Gold","2026-02-25":"Purple","2026-02-26":"Gold"};
 let colorDay = calendar[today] || "None";
 if(colorDay==="Gold"){document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
 else if(colorDay==="Purple"){document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
@@ -388,4 +388,5 @@ setupWordle();
 
 </body>
 </html>
+
 
