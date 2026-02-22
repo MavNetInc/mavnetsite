@@ -74,7 +74,25 @@ body{
     display:block;
     margin:5px auto;
 }
+#delay-banner{
+    background:#ff4444;
+    color:white;
+    font-weight:bold;
+    text-align:center;
+    padding:12px 0;
+    font-size:20px;
+    position:fixed;
+    top:60px; /* below system banner */
+    width:100%;
+    z-index:9998;
+    animation: blink 1s infinite;
+}
 
+@keyframes blink{
+    0%{opacity:1;}
+    50%{opacity:0.4;}
+    100%{opacity:1;}
+}
 /* Pages */
 .page {
     display: none; /* hide all pages by default */
@@ -105,6 +123,8 @@ body{
   <div id="banner-new">
     ✨ What's New: Page Preferences tab added for custom colors! ✨
   </div>
+  <div id="delay-banner" style="display:none;">
+  ⏰ SCHOOL DELAYED 2 HOURS — Check bus & class times
 </div>
 
 <!-- Navigation -->
@@ -368,3 +388,4 @@ setupWordle();
 
 </body>
 </html>
+
