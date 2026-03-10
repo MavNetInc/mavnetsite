@@ -288,7 +288,69 @@ let pretty = now.toLocaleDateString("en-US",{weekday:'long', year:'numeric', mon
 document.getElementById("dateText").innerHTML = "Today is " + pretty;
 
 // ===== COLOR DAY =====
-const calendar = {"2026-03-03":"Purple","2026-03-04":"Gold","2026-03-05":"Purple","2026-03-06":"Gold","2026-02-23":"Purple","2026-02-24":"Gold","2026-02-25":"Purple","2026-02-26":"Gold"};
+const calendar = {
+  "2026-03-03": "Purple",
+  "2026-03-04": "Gold",
+  "2026-03-05": "Purple",
+  "2026-03-06": "Gold",
+  "2026-03-07": "Purple",
+  "2026-03-08": "Gold",
+  "2026-03-09": "Purple",
+  "2026-03-10": "Gold",
+  "2026-03-11": "Purple",
+  "2026-03-12": "Gold",
+  "2026-03-13": "Purple",
+  "2026-03-14": "Gold",
+  "2026-03-15": "Purple",
+  "2026-03-16": "Gold",
+  "2026-03-17": "Purple",
+  "2026-03-18": "Gold",
+  "2026-03-19": "Purple",
+  "2026-03-20": "Gold",
+  "2026-03-21": "Purple",
+  "2026-03-22": "Gold",
+  "2026-03-23": "Purple",
+  "2026-03-24": "Gold",
+  "2026-03-25": "Purple",
+  "2026-03-26": "Gold",
+  "2026-03-27": "Purple",
+  "2026-03-28": "Gold",
+  "2026-03-29": "Purple",
+  "2026-03-30": "Gold",
+  "2026-03-31": "Purple",
+
+  "2026-04-01": "Gold",
+  "2026-04-02": "Purple",
+  "2026-04-03": "Gold",
+  "2026-04-04": "Purple",
+  "2026-04-05": "Gold",
+  "2026-04-06": "Purple",
+  "2026-04-07": "Gold",
+  "2026-04-08": "Purple",
+  "2026-04-09": "Gold",
+  "2026-04-10": "Purple",
+  "2026-04-11": "Gold",
+  "2026-04-12": "Purple",
+  "2026-04-13": "Gold",
+  "2026-04-14": "Purple",
+  "2026-04-15": "Gold",
+  "2026-04-16": "Purple",
+  "2026-04-17": "Gold",
+  "2026-04-18": "Purple",
+  "2026-04-19": "Gold",
+  "2026-04-20": "Purple",
+  "2026-04-21": "Gold",
+  "2026-04-22": "Purple",
+  "2026-04-23": "Gold",
+  "2026-04-24": "Purple",
+  "2026-04-25": "Gold",
+  "2026-04-26": "Purple",
+  "2026-04-27": "Gold",
+  "2026-04-28": "Purple",
+  "2026-04-29": "Gold",
+  "2026-04-30": "Purple"
+};
+
 let colorDay = calendar[today] || "None";
 if(colorDay==="Gold"){document.getElementById("colorText").innerHTML="Today is a Gold Day 🟡";document.getElementById("dateBox").className="box gold";}
 else if(colorDay==="Purple"){document.getElementById("colorText").innerHTML="Today is a Purple Day 🟣";document.getElementById("dateBox").className="box purple";}
@@ -390,6 +452,7 @@ setupWordle();
 
 </body>
 </html>
+
 
 
 
